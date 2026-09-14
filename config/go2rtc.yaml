@@ -1,0 +1,170 @@
+streams:
+  # Example stream mapping for Dahua
+  # cam1_main: rtsp://admin:admin123@192.168.1.108:554/cam/realmonitor?channel=1&subtype=0
+  # cam1_sub: rtsp://admin:admin123@192.168.1.108:554/cam/realmonitor?channel=1&subtype=1
+  testcam:
+    - rtsp://admin:Bismillah123@192.168.80.15
+  cam_5_sub:
+    - rtsp://admin:Bismillah123@192.168.80.11
+  cam_6_sub:
+    - rtsp://admin:Bismillah123@192.168.80.11
+  user_test:
+    - rtsp://admin:Bismillah123@192.168.80.11
+  cam_6_main:
+    - rtsp://admin:Bismillah123@192.168.80.11
+  cam_5_main:
+    - rtsp://admin:Bismillah123@192.168.80.11
+  cam_7_sub:
+    - rtsp://admin:Bismillah123@192.168.80.11
+  cam_8_sub:
+    - rtsp://admin:Bismillah123@192.168.80.12
+  cam_7_main:
+    - rtsp://admin:Bismillah123@192.168.80.11
+  cam_8_main:
+    - rtsp://admin:Bismillah123@192.168.80.12
+  cam_9_sub:
+    - rtsp://admin:Bismillah123@192.168.80.11
+  cam_10_sub:
+    - rtsp://admin:Bismillah123@192.168.80.11
+  cam_11_sub:
+    - rtsp://admin:Bismillah123@192.168.80.18
+  cam_12_sub:
+    - rtsp://admin:Bismillah123@192.168.80.30
+  cam_12_main:
+    - rtsp://admin:Bismillah123@192.168.80.30
+  cam_10_main:
+    - rtsp://admin:Bismillah123@192.168.80.11
+  cam_11_main:
+    - rtsp://admin:Bismillah123@192.168.80.18
+  cam_13_sub:
+    - rtsp://admin:Bismillah123@192.168.80.32
+  cam_14_sub:
+    - rtsp://admin:Bismillah123@192.168.80.19
+  cam_13_main:
+    - rtsp://admin:Bismillah123@192.168.80.32
+  cam_14_main:
+    - rtsp://admin:Bismillah123@192.168.80.19
+  cam_16_sub:
+    - rtsp://admin:Bismillah123@192.168.80.16
+  cam_15_sub:
+    - rtsp://admin:Bismillah123@192.168.80.16
+  cam_17_sub:
+    - rtsp://admin:Bismillah123@192.168.80.15
+  cam_18_sub:
+    - rtsp://admin:Bismillah123@192.168.80.35
+  cam_19_sub:
+    - rtsp://admin:Bismillah123@192.168.80.18
+  cam_20_sub:
+    - rtsp://admin:Bismillah123@192.168.80.20
+  cam_21_sub:
+    - rtsp://admin:Bismillah123@192.168.80.21
+  cam_22_sub:
+    - rtsp://admin:Bismillah123@192.168.80.22
+  cam_23_sub:
+    - rtsp://admin:Bismillah123@192.168.80.23
+  cam_20_main:
+    - rtsp://admin:Bismillah123@192.168.80.20
+  cam_22_main:
+    - rtsp://admin:Bismillah123@192.168.80.22
+  cam_24_sub:
+    - rtsp://admin:Bismillah123@192.168.80.24
+  cam_25_sub:
+    - rtsp://admin:Bismillah123@192.168.80.25
+  cam_26_sub:
+    - rtsp://admin:Bismillah123@192.168.80.26
+  cam_28_sub:
+    - rtsp://admin:Bismillah123@192.168.80.28
+  cam_29_sub:
+    - rtsp://admin:Bismillah123@192.168.80.29
+  cam_27_sub:
+    - rtsp://admin:Bismillah123@192.168.80.27
+  cam_30_sub:
+    - rtsp://admin:Bismillah123@192.168.80.31
+  cam_31_sub:
+    - rtsp://admin:Bismillah123@192.168.80.32
+  cam_32_sub:
+    - rtsp://admin:Bismillah123@192.168.80.33
+  cam_33_sub:
+    - rtsp://admin:Bismillah123@192.168.80.34
+  cam_34_sub:
+    - rtsp://admin:Bismillah123@192.168.80.36
+  cam_35_sub:
+    - rtsp://admin:Bismillah123@192.168.80.37
+  cam_37_sub:
+    - rtsp://admin:Bismillah123@192.168.80.39
+  cam_39_sub:
+    - rtsp://admin:Bismillah123@192.168.80.41
+  cam_40_sub:
+    - rtsp://admin:Bismillah123@192.168.80.17
+  cam_36_sub:
+    - rtsp://admin:Bismillah123@192.168.80.38
+  cam_41_sub:
+    - rtsp://admin:Bismillah123@192.168.80.13
+  cam_38_sub:
+    - rtsp://admin:Bismillah123@192.168.80.40
+  cam_42_sub:
+    - rtsp://admin:Bismillah123@192.168.80.14
+  cam_43_sub:
+    - rtsp://admin:Bismillah123@192.168.80.18
+  cam_43_main:
+    - rtsp://admin:Bismillah123@192.168.80.18
+  cam_16_main:
+    - rtsp://admin:Bismillah123@192.168.80.16
+  cam_17_main:
+    - rtsp://admin:Bismillah123@192.168.80.15
+  cam_18_main:
+    - rtsp://admin:Bismillah123@192.168.80.35
+  cam_31_main:
+    - rtsp://admin:Bismillah123@192.168.80.32
+  cam_21_main:
+    - rtsp://admin:Bismillah123@192.168.80.21
+  cam_23_main:
+    - rtsp://admin:Bismillah123@192.168.80.23
+  cam_25_main:
+    - rtsp://admin:Bismillah123@192.168.80.25
+  cam_30_main:
+    - rtsp://admin:Bismillah123@192.168.80.31
+  cam_34_main:
+    - rtsp://admin:Bismillah123@192.168.80.36
+  cam_39_main:
+    - rtsp://admin:Bismillah123@192.168.80.41
+  cam_24_main:
+    - rtsp://admin:Bismillah123@192.168.80.24
+  cam_26_main:
+    - rtsp://admin:Bismillah123@192.168.80.26
+  cam_27_main:
+    - rtsp://admin:Bismillah123@192.168.80.27
+  cam_28_main:
+    - rtsp://admin:Bismillah123@192.168.80.28
+  cam_29_main:
+    - rtsp://admin:Bismillah123@192.168.80.29
+  cam_32_main:
+    - rtsp://admin:Bismillah123@192.168.80.33
+  cam_33_main:
+    - rtsp://admin:Bismillah123@192.168.80.34
+  cam_35_main:
+    - rtsp://admin:Bismillah123@192.168.80.37
+  cam_36_main:
+    - rtsp://admin:Bismillah123@192.168.80.38
+  cam_37_main:
+    - rtsp://admin:Bismillah123@192.168.80.39
+  cam_38_main:
+    - rtsp://admin:Bismillah123@192.168.80.40
+  cam_40_main:
+    - rtsp://admin:Bismillah123@192.168.80.17
+  cam_41_main:
+    - rtsp://admin:Bismillah123@192.168.80.13
+  cam_42_main:
+    - rtsp://admin:Bismillah123@192.168.80.14
+  cam_45_sub:
+    - rtsp://admin:Bismillah123@192.168.80.42
+  cam_44_main:
+    - rtsp://admin:Bismillah123@192.168.80.12
+  cam_45_main:
+    - rtsp://admin:Bismillah123@192.168.80.42
+api:
+  listen: ":1984"
+webrtc:
+  listen: ":8555"
+rtsp:
+  listen: ":8554"

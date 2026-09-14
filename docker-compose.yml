@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  go2rtc:
+    image: alexxit/go2rtc:latest
+    network_mode: host
+    volumes:
+      - ./config/go2rtc.yaml:/config/go2rtc.yaml
+    restart: unless-stopped
