@@ -30,24 +30,25 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#050B14] relative overflow-hidden font-sans">
       
-      {/* Futuristic Clean Background */}
+      {/* Background Image & Overlays */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        {/* Deep background */}
-        <div className="absolute inset-0 bg-[#050B14]"></div>
+        {/* The CCTV Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[20s] ease-linear hover:scale-110"
+          style={{ backgroundImage: `url('/bg-cctv.jpg')` }}
+        ></div>
         
-        {/* Glowing Cyber Orbs */}
-        <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[150px]"></div>
-        <div className="absolute bottom-1/4 left-1/4 w-[600px] h-[600px] bg-cyan-400/10 rounded-full blur-[150px]"></div>
+        {/* Darkening & Color Overlay for Readability */}
+        <div className="absolute inset-0 bg-[#050B14]/80 mix-blend-multiply"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050B14] via-[#050B14]/50 to-transparent"></div>
         
-        {/* Futuristic Grid (Perspective) */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] opacity-70" style={{ transform: 'perspective(1000px) rotateX(60deg) scale(2) translateY(-200px)' }}></div>
-        
-        {/* Subtle overlay to fade the grid at the top */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050B14] via-transparent to-[#050B14]/80"></div>
+        {/* Glowing Accents */}
+        <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-cyan-400/10 rounded-full blur-[120px]"></div>
       </div>
 
-      {/* Login Card - Smaller and Sleeker */}
-      <div className="relative z-10 w-full max-w-[340px] p-8 bg-[#0A1220]/70 backdrop-blur-3xl border border-blue-500/20 shadow-[0_0_40px_rgba(0,120,255,0.1)] rounded-3xl">
+      {/* Login Card - Sleeker with better Glassmorphism */}
+      <div className="relative z-10 w-full max-w-[340px] p-8 bg-[#0a1220]/60 backdrop-blur-xl border border-white/10 shadow-[0_0_40px_rgba(0,180,255,0.15)] rounded-3xl">
         
         <div className="flex flex-col items-center mb-8 text-center">
           <div className="bg-gradient-to-b from-cyan-400 to-blue-600 p-3.5 rounded-2xl shadow-[0_0_20px_rgba(0,180,255,0.3)] mb-5">

@@ -27,10 +27,10 @@ function CctvMarkers({ cameras, activeCam, setActiveCam, groupColors = {} }) {
       className: 'bg-transparent border-0',
       html: `
         <div class="relative flex items-center justify-center group cursor-pointer transition-transform duration-300 hover:scale-110" style="width:${baseSize}px; height:${baseSize}px;">
-          ${isActive ? `<span class="absolute inline-flex rounded-full bg-red-500 opacity-40 animate-ping" style="width:${baseSize*1.2}px; height:${baseSize*1.2}px;"></span>` : ''}
+          ${isActive ? `<span class="absolute inline-flex rounded-full opacity-40 animate-ping" style="background-color: ${camColor}; width:${baseSize*1.2}px; height:${baseSize*1.2}px;"></span>` : ''}
           <div class="relative z-10 rounded-full border-2 flex items-center justify-center backdrop-blur-md drop-shadow-lg" 
-               style="width:${innerSize}px; height:${innerSize}px; border-color: ${isActive ? '#ef4444' : camColor}; background-color: ${isActive ? 'rgba(239, 68, 68, 0.2)' : camColor + '40'};">
-            <img src="https://unpkg.com/lucide-static@0.321.0/icons/cctv.svg" class="filter invert brightness-0 sepia-0 hue-rotate-180 ${isActive ? 'drop-shadow-[0_0_8px_red]' : ''}" style="width:${iconSize}px; height:${iconSize}px;" />
+               style="width:${innerSize}px; height:${innerSize}px; border-color: ${camColor}; background-color: ${camColor}40; ${isActive ? `box-shadow: 0 0 10px ${camColor};` : ''}">
+            <img src="https://unpkg.com/lucide-static@0.321.0/icons/cctv.svg" class="filter invert brightness-0 sepia-0 hue-rotate-180" style="width:${iconSize}px; height:${iconSize}px; ${isActive ? `filter: drop-shadow(0 0 8px ${camColor});` : ''}" />
           </div>
         </div>
       `,
