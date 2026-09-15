@@ -156,6 +156,7 @@ export default function MapDashboard() {
   const handleDrop = async (e, dropCamId) => {
     if (search) return;
     e.preventDefault();
+    e.stopPropagation(); // Prevent triggering group drop
     const dragId = parseInt(e.dataTransfer.getData('camId'), 10);
     if (dragId === dropCamId || isNaN(dragId)) return;
 
@@ -181,6 +182,45 @@ export default function MapDashboard() {
        } catch (err) {
          console.error(err);
        }
+    });
+  };
+
+  const handleGroupDragStart = (e, groupName) => {
+    if (search) return;
+    e.dataTransfer.setData('groupName', groupName);
+  };
+
+  const handleGroupDrop = async (e, dropGroupName) => {
+    if (search) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const dragName = e.dataTransfer.getData('groupName');
+    if (!dragName || dragName === dropGroupName) return;
+
+    const dragCams = groupedCams[dragName];
+    if (!dragCams) return;
+
+    let newList = [...filteredCams];
+    const isDragCam = c => (c.location || 'Area Lainnya') === dragName;
+    newList = newList.filter(c => !isDragCam(c));
+
+    const dropIndex = newList.findIndex(c => (c.location || 'Area Lainnya') === dropGroupName);
+    if (dropIndex === -1) return;
+
+    newList.splice(dropIndex, 0, ...dragCams);
+
+    const updatedCams = newList.map((cam, idx) => ({ ...cam, channel: idx + 1 }));
+    
+    const newCamerasState = cameras.map(c => {
+       const updated = updatedCams.find(uc => uc.id === c.id);
+       return updated ? updated : c;
+    });
+    setCameras(newCamerasState);
+
+    updatedCams.forEach(async (cam) => {
+       try {
+         await axios.put(`/api/cameras/${cam.id}`, cam);
+       } catch (err) {}
     });
   };
 
@@ -270,8 +310,15 @@ export default function MapDashboard() {
             const isCollapsed = search ? false : collapsedGroups[group];
             const gColor = groupColors[group] || '#3b82f6';
             return (
-              <div key={group} className="mb-2">
-                <div className="flex items-center justify-between px-3 py-1.5 mt-1 border-b border-white/5 mx-1 mb-1 hover:bg-white/5 cursor-pointer rounded transition" onClick={() => toggleGroup(group)}>
+              <div 
+                key={group} 
+                className="mb-2"
+                draggable={!search}
+                onDragStart={(e) => handleGroupDragStart(e, group)}
+                onDragOver={handleDragOver}
+                onDrop={(e) => handleGroupDrop(e, group)}
+              >
+                <div className={`flex items-center justify-between px-3 py-1.5 mt-1 border-b border-white/5 mx-1 mb-1 hover:bg-white/5 cursor-pointer rounded transition ${!search ? 'active:cursor-grabbing' : ''}`} onClick={() => toggleGroup(group)}>
                   <div className="flex items-center gap-1.5 min-w-0">
                     <Video size={12} className={`text-slate-400 shrink-0 transition-all ${isCollapsed ? 'opacity-50' : 'text-blue-400'}`} />
                     <div className="text-[9px] font-bold text-slate-300 uppercase tracking-widest truncate">{group}</div>
@@ -302,7 +349,7 @@ export default function MapDashboard() {
                   >
                     <div className="flex items-start gap-2.5">
                       <div className="mt-[2px] font-mono text-[9px] text-slate-600 w-3">{cam.channel}</div>
-                      <div className={`mt-[4px] w-1.5 h-1.5 rounded-full shadow-[0_0_5px_currentColor] shrink-0 ${activeCam?.id === cam.id ? 'bg-red-500 text-red-500 animate-pulse' : ''}`} style={activeCam?.id !== cam.id ? { backgroundColor: gColor, color: gColor } : {}}></div>
+                      <div className={`mt-[4px] w-1.5 h-1.5 rounded-full shadow-[0_0_5px_currentColor] shrink-0 ${activeCam?.id === cam.id ? 'animate-pulse' : ''}`} style={{ backgroundColor: gColor, color: gColor }}></div>
                       <div className="min-w-0 flex-1">
                         <div className={`font-bold text-xs truncate leading-tight ${activeCam?.id === cam.id ? 'text-white' : 'text-slate-300'}`}>{cam.name}</div>
                       </div>

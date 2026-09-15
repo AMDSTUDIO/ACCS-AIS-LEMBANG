@@ -3,7 +3,7 @@ streams:
   # cam1_main: rtsp://admin:admin123@192.168.1.108:554/cam/realmonitor?channel=1&subtype=0
   # cam1_sub: rtsp://admin:admin123@192.168.1.108:554/cam/realmonitor?channel=1&subtype=1
   testcam:
-    - rtsp://admin:Bismillah123@192.168.80.15
+    - rtsp://admin:Bismillah123@192.168.80.15:554/cam/realmonitor?channel=1
   cam_5_sub:
     - rtsp://admin:Bismillah123@192.168.80.11
   cam_6_sub:
