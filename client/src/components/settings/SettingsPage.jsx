@@ -14,8 +14,8 @@ export default function SettingsPage() {
 
   const fetchData = async () => {
     const [cams, sets] = await Promise.all([
-      axios.get('http://localhost:5000/api/cameras'),
-      axios.get('http://localhost:5000/api/settings')
+      axios.get('/api/cameras'),
+      axios.get('/api/settings')
     ]);
     setCameras(cams.data);
     if (sets.data.map_config) {
@@ -26,20 +26,20 @@ export default function SettingsPage() {
   };
 
   const saveConfig = async (key, val) => {
-    await axios.post('http://localhost:5000/api/settings', { key, value: val });
+    await axios.post('/api/settings', { key, value: val });
     alert(key === 'nvr_config' ? 'NVR connection saved!' : 'Map settings saved!');
   };
 
   const addCamera = async (e) => {
     e.preventDefault();
-    await axios.post('http://localhost:5000/api/cameras', newCam);
+    await axios.post('/api/cameras', newCam);
     setNewCam({ name: '', location: '', channel: 1, lat: '', lng: '' });
     fetchData();
   };
 
   const deleteCamera = async (id) => {
     if (confirm('Delete this camera?')) {
-      await axios.delete(`http://localhost:5000/api/cameras/${id}`);
+      await axios.delete(`/api/cameras/${id}`);
       fetchData();
     }
   };

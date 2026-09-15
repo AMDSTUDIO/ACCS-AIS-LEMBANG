@@ -25,7 +25,7 @@ export function useWebRTC(cameraId, streamType = 'sub') {
     pc.createOffer().then(offer => {
       pc.setLocalDescription(offer);
       
-      axios.post('http://localhost:5000/api/webrtc', {
+      axios.post('/api/webrtc', {
         cameraId,
         streamType,
         type: offer.type,

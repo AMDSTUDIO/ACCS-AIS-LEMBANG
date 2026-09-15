@@ -41,8 +41,8 @@ export default function SettingsModal({ onClose }) {
 
   const fetchData = async () => {
     const [cams, sets] = await Promise.all([
-      axios.get('http://localhost:5000/api/cameras'),
-      axios.get('http://localhost:5000/api/settings')
+      axios.get('/api/cameras'),
+      axios.get('/api/settings')
     ]);
     setCameras(cams.data);
     if (sets.data.map_config) { 
@@ -53,7 +53,7 @@ export default function SettingsModal({ onClose }) {
   };
 
   const saveConfig = async (key, val) => {
-    await axios.post('http://localhost:5000/api/settings', { key, value: val });
+    await axios.post('/api/settings', { key, value: val });
     alert(key === 'nvr_config' ? 'Koneksi NVR Disimpan!' : 'Pengaturan Peta Disimpan!');
   };
 
@@ -63,10 +63,10 @@ export default function SettingsModal({ onClose }) {
     
     try {
       if (newCam.id) {
-        await axios.put(`http://localhost:5000/api/cameras/${newCam.id}`, newCam);
+        await axios.put(`/api/cameras/${newCam.id}`, newCam);
         alert('Kamera berhasil diperbarui!');
       } else {
-        await axios.post('http://localhost:5000/api/cameras', newCam);
+        await axios.post('/api/cameras', newCam);
       }
       
       setNewCam({ id: null, name: '', location: '', channel: 1, lat: mapConfig.lat || -6.808722, lng: mapConfig.lng || 107.649002, rtsp_url: '' });
@@ -88,7 +88,7 @@ export default function SettingsModal({ onClose }) {
     
     const promises = [];
     for (let ch = batchConfig.start; ch <= batchConfig.end; ch++) {
-      promises.push(axios.post('http://localhost:5000/api/cameras', {
+      promises.push(axios.post('/api/cameras', {
         name: `${batchConfig.prefix}${ch}`,
         location: `Lokasi NVR Ch ${ch}`,
         channel: ch,
@@ -103,7 +103,7 @@ export default function SettingsModal({ onClose }) {
 
   const deleteCamera = async (id) => {
     if (confirm('Hapus kamera ini?')) {
-      await axios.delete(`http://localhost:5000/api/cameras/${id}`);
+      await axios.delete(`/api/cameras/${id}`);
       fetchData();
     }
   };

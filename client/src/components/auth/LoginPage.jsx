@@ -17,7 +17,7 @@ export default function LoginPage() {
     setLoading(true);
     setError('');
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', { username, password });
+      const res = await axios.post('/api/auth/login', { username, password });
       login(res.data.user);
       navigate('/');
     } catch (err) {

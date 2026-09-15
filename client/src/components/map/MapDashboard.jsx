@@ -80,8 +80,8 @@ export default function MapDashboard() {
   useEffect(() => {
     const fetchData = async () => {
       const [cams, sets] = await Promise.all([
-        axios.get('http://localhost:5000/api/cameras'),
-        axios.get('http://localhost:5000/api/settings')
+        axios.get('/api/cameras'),
+        axios.get('/api/settings')
       ]);
       setCameras(cams.data);
       if (sets.data.map_config) {
@@ -135,7 +135,7 @@ export default function MapDashboard() {
     const newColors = { ...groupColors, [groupName]: color };
     setSettings({ ...settings, group_colors: newColors });
     try {
-      await axios.post('http://localhost:5000/api/settings', { key: 'group_colors', value: newColors });
+      await axios.post('/api/settings', { key: 'group_colors', value: newColors });
     } catch (e) { console.error(e); }
   };
 
@@ -177,7 +177,7 @@ export default function MapDashboard() {
 
     updatedCams.forEach(async (cam) => {
        try {
-         await axios.put(`http://localhost:5000/api/cameras/${cam.id}`, cam);
+         await axios.put(`/api/cameras/${cam.id}`, cam);
        } catch (err) {
          console.error(err);
        }

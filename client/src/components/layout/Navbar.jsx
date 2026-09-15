@@ -10,7 +10,7 @@ export default function Navbar() {
   const location = useLocation();
 
   const handleLogout = async () => {
-    await axios.post('http://localhost:5000/api/auth/logout');
+    await axios.post('/api/auth/logout');
     logout();
     navigate('/login');
   };

@@ -23,7 +23,7 @@ export default function App() {
   const [isChecking, setIsChecking] = React.useState(true);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/auth/me')
+    axios.get('/api/auth/me')
       .then(res => login(res.data.user))
       .catch(() => login(null))
       .finally(() => setIsChecking(false));
