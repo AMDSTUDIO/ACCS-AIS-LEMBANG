@@ -14,16 +14,15 @@ function initDb() {
   db.exec(schema, (err) => {
     if (err) console.error("Error executing schema", err);
     else {
+      db.run("ALTER TABLE cameras ADD COLUMN rtsp_url TEXT", (err) => {});
+      
       db.get('SELECT * FROM users WHERE username = ?', ['admin'], (err, row) => {
         if (!row) {
           const hash = bcrypt.hashSync('admin123', 10);
           db.run('INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)', ['admin', hash, 'admin']);
           
-          const insertCam = db.prepare('INSERT INTO cameras (name, location, channel, lat, lng, is_active) VALUES (?, ?, ?, ?, ?, ?)');
-          insertCam.run('Front Gate', 'Entrance', 1, -6.2000, 106.8166, 1);
-          insertCam.run('Backyard', 'Rear', 2, -6.2010, 106.8170, 1);
-          insertCam.run('Lobby', 'Indoors', 3, -6.1990, 106.8150, 1);
-          insertCam.run('Parking Lot', 'Exterior', 4, -6.2020, 106.8180, 1);
+          const insertCam = db.prepare('INSERT INTO cameras (name, location, channel, lat, lng, is_active, rtsp_url) VALUES (?, ?, ?, ?, ?, ?, ?)');
+          insertCam.run('Kamera Lembang', 'Gate', 1, -6.808777, 107.649397, 1, '');
           insertCam.finalize();
         }
       });
@@ -35,7 +34,7 @@ function initDb() {
       });
       db.get('SELECT * FROM settings WHERE key = ?', ['map_config'], (err, row) => {
         if (!row) {
-          const defaultMapConfig = JSON.stringify({ lat: -6.2000, lng: 106.8166, zoom: 13 });
+          const defaultMapConfig = JSON.stringify({ lat: -6.808777, lng: 107.649397, zoom: 19 });
           db.run('INSERT INTO settings (key, value) VALUES (?, ?)', ['map_config', defaultMapConfig]);
         }
       });
