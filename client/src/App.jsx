@@ -1,47 +1,47 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/useAuthStore';
-import Login from './components/auth/LoginPage';
+import LoginPage from './components/auth/LoginPage';
 import MapDashboard from './components/map/MapDashboard';
 import MultiViewGrid from './components/multiview/MultiViewGrid';
 import axios from 'axios';
 
+axios.defaults.withCredentials = true;
+
 const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuthStore();
-  if (loading) return <div className="h-screen w-screen bg-black flex items-center justify-center text-white font-bold">Memuat Sistem...</div>;
-  if (!user) return <Navigate to="/login" replace />;
-  return children;
+  const user = useAuthStore(state => state.user);
+  if (!user) return <Navigate to="/login" />;
+  return (
+    <div className="w-screen h-screen overflow-hidden bg-slate-900 text-white relative font-sans">
+      {children}
+    </div>
+  );
 };
 
 export default function App() {
-  const { checkAuth } = useAuthStore();
+  const login = useAuthStore(state => state.login);
+  const [isChecking, setIsChecking] = React.useState(true);
 
   useEffect(() => {
-    checkAuth();
-    
-    // Interceptor for 401 Unauthorized globally
-    const interceptor = axios.interceptors.response.use(
-      response => response,
-      error => {
-        if (error.response?.status === 401) {
-          useAuthStore.getState().logout();
-        }
-        return Promise.reject(error);
-      }
-    );
+    axios.get('/api/auth/me')
+      .then(res => login(res.data.user))
+      .catch(() => login(null))
+      .finally(() => setIsChecking(false));
+  }, [login]);
 
-    return () => axios.interceptors.response.eject(interceptor);
-  }, [checkAuth]);
+  if (isChecking) {
+    return <div className="w-screen h-screen bg-slate-950 flex items-center justify-center text-white font-bold">Checking Secure Connection...</div>;
+  }
 
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/monitor/map" element={<ProtectedRoute><MapDashboard /></ProtectedRoute>} />
         <Route path="/monitor/grid" element={<ProtectedRoute><MultiViewGrid /></ProtectedRoute>} />
         <Route path="/" element={<Navigate to="/monitor/map" replace />} />
         <Route path="*" element={<Navigate to="/monitor/map" replace />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }

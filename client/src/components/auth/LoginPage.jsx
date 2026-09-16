@@ -19,7 +19,7 @@ export default function LoginPage() {
     try {
       const res = await axios.post('/api/auth/login', { username, password });
       login(res.data.user);
-      navigate('/portal');
+      navigate('/monitor/map');
     } catch (err) {
       setError('Akses ditolak. Kredensial tidak valid.');
     } finally {
