@@ -46,7 +46,7 @@ export default function GroupViewModal({ cameras, onClose }) {
                 <div className="absolute top-2 left-2 z-10 bg-black/60 backdrop-blur-md px-2 py-1 rounded border border-white/10 text-[10px] font-bold text-white max-w-[80%] truncate">
                   <span className="text-cyan-400 mr-1">CH {cam.channel}</span> {cam.name}
                 </div>
-                <WebRTCPlayer url={cam.rtsp_url} isMuted={true} />
+                <WebRTCPlayer cameraId={cam.id} streamType="sub" />
               </div>
             ))}
           </div>

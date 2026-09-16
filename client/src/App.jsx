@@ -1,50 +1,47 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/useAuthStore';
-import LoginPage from './components/auth/LoginPage';
+import Login from './components/auth/Login';
 import MapDashboard from './components/map/MapDashboard';
 import MultiViewGrid from './components/multiview/MultiViewGrid';
-import PortalHub from './components/portal/PortalHub';
-import NocWallpanel from './components/wallpanel/NocWallpanel';
 import axios from 'axios';
 
-axios.defaults.withCredentials = true;
-
 const ProtectedRoute = ({ children }) => {
-  const user = useAuthStore(state => state.user);
-  if (!user) return <Navigate to="/login" />;
-  return (
-    <div className="w-screen h-screen overflow-hidden bg-slate-900 text-white relative font-sans">
-      {children}
-    </div>
-  );
+  const { user, loading } = useAuthStore();
+  if (loading) return <div className="h-screen w-screen bg-black flex items-center justify-center text-white font-bold">Memuat Sistem...</div>;
+  if (!user) return <Navigate to="/login" replace />;
+  return children;
 };
 
 export default function App() {
-  const login = useAuthStore(state => state.login);
-  const [isChecking, setIsChecking] = React.useState(true);
+  const { checkAuth } = useAuthStore();
 
   useEffect(() => {
-    axios.get('/api/auth/me')
-      .then(res => login(res.data.user))
-      .catch(() => login(null))
-      .finally(() => setIsChecking(false));
-  }, [login]);
+    checkAuth();
+    
+    // Interceptor for 401 Unauthorized globally
+    const interceptor = axios.interceptors.response.use(
+      response => response,
+      error => {
+        if (error.response?.status === 401) {
+          useAuthStore.getState().logout();
+        }
+        return Promise.reject(error);
+      }
+    );
 
-  if (isChecking) {
-    return <div className="w-screen h-screen bg-slate-950 flex items-center justify-center text-white font-bold">Checking Secure Connection...</div>;
-  }
+    return () => axios.interceptors.response.eject(interceptor);
+  }, [checkAuth]);
 
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/monitor/map" element={<ProtectedRoute><MapDashboard /></ProtectedRoute>} />
         <Route path="/monitor/grid" element={<ProtectedRoute><MultiViewGrid /></ProtectedRoute>} />
-        <Route path="/monitor/wall" element={<ProtectedRoute><NocWallpanel /></ProtectedRoute>} />
         <Route path="/" element={<Navigate to="/monitor/map" replace />} />
         <Route path="*" element={<Navigate to="/monitor/map" replace />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
