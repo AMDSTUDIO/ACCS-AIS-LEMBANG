@@ -69,6 +69,17 @@ function MapController({ center, zoom }) {
 
 import { useNavigate } from 'react-router-dom';
 
+
+const getLocationColor = (loc) => {
+  if (!loc) return { bg: 'bg-slate-500/20', text: 'text-slate-400', border: 'border-slate-500/30' };
+  const l = loc.toLowerCase();
+  if (l.includes('public')) return { bg: 'bg-blue-500/20', text: 'text-blue-400', border: 'border-blue-500/30' };
+  if (l.includes('akhwat')) return { bg: 'bg-fuchsia-500/20', text: 'text-fuchsia-400', border: 'border-fuchsia-500/30' };
+  if (l.includes('ikhwan')) return { bg: 'bg-emerald-500/20', text: 'text-emerald-400', border: 'border-emerald-500/30' };
+  if (l.includes('hospitality')) return { bg: 'bg-orange-500/20', text: 'text-orange-400', border: 'border-orange-500/30' };
+  return { bg: 'bg-cyan-500/20', text: 'text-cyan-400', border: 'border-cyan-500/30' };
+};
+
 export default function MapDashboard() {
   const { cameras, setCameras, settings, setSettings } = useCctvStore();
   const { user, logout } = useAuthStore();
@@ -377,11 +388,14 @@ export default function MapDashboard() {
             {/* Header */}
             <div className="flex justify-between items-start">
               <div>
-                <h2 className="font-extrabold text-white text-lg leading-tight uppercase tracking-wide truncate w-64">{activeCam.location || 'Area Lainnya'}</h2>
-                <div className="inline-block mt-1 bg-[#222] text-slate-400 text-[10px] font-bold px-2 py-0.5 rounded border border-[#333]">CCTV</div>
+                <div className="flex items-center gap-2">
+                  <div className={`w-3 h-3 rounded-full ${getLocationColor(activeCam.location).bg} border ${getLocationColor(activeCam.location).border}`}></div>
+                  <h2 className="font-extrabold text-white text-lg leading-tight uppercase tracking-wide truncate w-56">{activeCam.location || 'Area Lainnya'}</h2>
+                </div>
+                <div className={`inline-block mt-1 ${getLocationColor(activeCam.location).bg} ${getLocationColor(activeCam.location).text} text-[10px] font-bold px-2 py-0.5 rounded border ${getLocationColor(activeCam.location).border}`}>GRUP KAMERA</div>
               </div>
               <div className="flex gap-1.5">
-                <button className="w-8 h-8 flex justify-center items-center bg-[#1a1a1a] hover:bg-[#2a2a2a] rounded-lg border border-[#333] text-slate-400 transition"><Shield size={14}/></button>
+                
                 <button 
                   onClick={() => {
                     const elem = document.getElementById(`vid-container-${activeCam.id}`);

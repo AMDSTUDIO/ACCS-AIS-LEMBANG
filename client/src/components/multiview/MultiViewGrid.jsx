@@ -163,6 +163,9 @@ export default function MultiViewGrid() {
           {(expandedIndex !== null ? [expandedIndex] : Array.from({ length: layout }).map((_, i) => i)).map((i) => {
             const cam = activeMultiViews[i];
             const isMainStream = expandedIndex !== null;
+            const textScale = layout > 16 ? 'text-[7px] p-1' : layout > 9 ? 'text-[8px] p-2' : 'text-[10px] p-3';
+            const badgeScale = layout > 16 ? 'px-1 py-0 text-[6px]' : 'px-1.5 py-0.5 text-[9px]';
+
             return (
               <div 
                 key={i} 
@@ -178,10 +181,10 @@ export default function MultiViewGrid() {
                 {cam ? (
                   <>
                     <WebRtcPlayer cameraId={cam.id} streamType={isMainStream ? "main" : "sub"} />
-                    <div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-black/80 to-transparent p-3 pointer-events-none flex justify-between items-start">
-                      <div className="text-[10px] font-bold text-white uppercase tracking-widest drop-shadow-md flex items-center gap-2">
-                        <span className="bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 px-1.5 py-0.5 rounded">CH {cam.id}</span>
-                        {cam.name}
+                    <div className={`absolute top-0 left-0 right-0 bg-gradient-to-b from-black/80 to-transparent pointer-events-none flex justify-between items-start ${textScale}`}>
+                      <div className="font-bold text-white uppercase tracking-widest drop-shadow-md flex items-center gap-1.5">
+                        <span className={`bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 rounded ${badgeScale}`}>CH {cam.id}</span>
+                        <span className="truncate max-w-[120px]">{cam.name}</span>
                       </div>
                       {isMainStream && (
                         <div className="bg-red-500/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded text-[9px] font-bold tracking-widest flex items-center gap-1.5 backdrop-blur-sm">
