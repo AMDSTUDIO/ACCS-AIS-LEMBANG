@@ -106,10 +106,10 @@ export default function MultiViewGrid() {
         <div className="h-14 bg-[#0a1220]/80 backdrop-blur-md border-b border-white/10 flex items-center justify-between px-6 z-10 shadow-md">
           <div className="flex items-center gap-4">
             <button 
-              onClick={() => navigate('/portal')}
+              onClick={() => navigate('/monitor/map')}
               className="flex items-center gap-2 text-xs font-bold text-cyan-400 hover:text-cyan-300 hover:bg-white/5 px-3 py-1.5 rounded-lg transition-colors border border-cyan-500/30"
             >
-              ← Kembali ke Portal
+              ← Kembali ke Peta
             </button>
             <div className="h-4 w-px bg-white/10"></div>
             <div className="flex gap-1 bg-black/20 p-1 rounded-lg border border-white/5">

@@ -207,14 +207,14 @@ export default function SettingsModal({ onClose }) {
           </button>
           <button onClick={() => setActiveTab('users')} className={`flex items-center gap-3 p-3 rounded-xl transition font-medium ${activeTab === 'users' ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.3)]' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}`}>
             <Users size={18} />
-            Manajemen User (RBAC)
+            Manajemen User
           </button>
         </div>
 
         {/* CONTENT AREA */}
         <div className="flex-1 flex flex-col h-full bg-[#111827]">
           <div className="h-16 border-b border-slate-800 flex items-center justify-between px-6 bg-[#0a0f1c]">
-            <h2 className="text-lg font-bold text-white">
+            <h2 className="text-base font-bold text-slate-100">
               {activeTab === 'cctv' ? 'Data Kamera CCTV' : activeTab === 'nvr' ? 'Pengaturan Server NVR' : 'Pusat Koordinat Peta Default'}
             </h2>
             <button onClick={onClose} className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition">
@@ -293,7 +293,7 @@ export default function SettingsModal({ onClose }) {
             {activeTab === 'users' && (
               <div className="max-w-4xl">
                 <form onSubmit={saveUser} className="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl mb-8 space-y-4">
-                  <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                  <h3 className="text-base font-bold text-slate-100 mb-4 flex items-center gap-2">
                     <UserPlus size={20} className="text-blue-400" /> 
                     {newUser.id ? 'Edit Pengguna' : 'Tambah Pengguna Baru'}
                   </h3>
@@ -314,16 +314,48 @@ export default function SettingsModal({ onClose }) {
                         <option value="superadmin">Superadmin (Kelola Semua)</option>
                       </select>
                     </div>
-                    <div>
-                      <label className="block text-xs text-slate-400 mb-1">Akses Kamera (ID array atau 'all')</label>
-                      <input type="text" value={Array.isArray(newUser.permissions) ? JSON.stringify(newUser.permissions) : newUser.permissions} onChange={e=>{
-                        let val = e.target.value;
-                        if(val !== 'all' && val.startsWith('[')){
-                          try { val = JSON.parse(val); } catch(err){}
-                        }
-                        setNewUser({...newUser, permissions:val})
-                      }} className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-blue-500 outline-none" placeholder="all atau [1, 2, 3]" />
-                      <p className="text-[10px] text-slate-500 mt-1">Contoh: all (untuk semua) atau [1, 2, 3] (hanya lihat ID 1,2,3)</p>
+                    <div className="col-span-2 mt-2">
+                      <label className="block text-xs text-slate-400 mb-2">Akses Kamera</label>
+                      <div className="bg-slate-900 border border-slate-700 rounded-lg p-4 max-h-48 overflow-y-auto">
+                        <label className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-700 cursor-pointer">
+                          <input type="checkbox" 
+                            checked={newUser.permissions === 'all'} 
+                            onChange={(e) => setNewUser({...newUser, permissions: e.target.checked ? 'all' : []})} 
+                            className="w-4 h-4 rounded border-slate-600 bg-slate-800"
+                          />
+                          <span className="text-sm font-bold text-white">Beri Akses ke Semua Kamera</span>
+                        </label>
+                        
+                        {newUser.permissions !== 'all' && (
+                          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            {Object.entries(cameras.reduce((acc, cam) => {
+                              const group = cam.location || 'Area Lainnya';
+                              if (!acc[group]) acc[group] = [];
+                              acc[group].push(cam);
+                              return acc;
+                            }, {})).map(([groupName, groupCams]) => (
+                              <div key={groupName} className="mb-2">
+                                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">{groupName}</div>
+                                {groupCams.map(cam => (
+                                  <label key={cam.id} className="flex items-center gap-2 mb-1 cursor-pointer">
+                                    <input type="checkbox"
+                                      checked={Array.isArray(newUser.permissions) && newUser.permissions.includes(cam.id)}
+                                      onChange={(e) => {
+                                        let current = Array.isArray(newUser.permissions) ? [...newUser.permissions] : [];
+                                        if (e.target.checked) current.push(cam.id);
+                                        else current = current.filter(id => id !== cam.id);
+                                        setNewUser({...newUser, permissions: current});
+                                      }}
+                                      className="w-3.5 h-3.5 rounded border-slate-600 bg-slate-800"
+                                    />
+                                    <span className="text-xs text-slate-300">{cam.name}</span>
+                                  </label>
+                                ))}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <div className="flex gap-2 pt-2">

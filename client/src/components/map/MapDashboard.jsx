@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, useMap, useMapEvents } from 'react-lea
 import L from 'leaflet';
 import axios from 'axios';
 import Clock from './Clock';
+import GroupViewModal from './GroupViewModal';
 import { useCctvStore } from '../../store/useCctvStore';
 import { useAuthStore } from '../../store/useAuthStore';
 import WebRtcPlayer from '../player/WebRtcPlayer';
@@ -76,6 +77,7 @@ export default function MapDashboard() {
   const [showSettings, setShowSettings] = useState(false);
   const [collapsedGroups, setCollapsedGroups] = useState({});
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [groupViewCams, setGroupViewCams] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -412,10 +414,10 @@ export default function MapDashboard() {
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-2 mt-1">
-              <button onClick={() => openMultiView([activeCam])} className="w-full bg-[#161622] hover:bg-[#1e1e2d] border border-[#2d2d44] text-[#8e8eba] py-2.5 rounded-xl text-xs font-bold flex justify-center items-center gap-2 transition">
-                <Video size={14} /> ADD TO MULTI-VIEW
+              <button onClick={() => setGroupViewCams([activeCam])} className="w-full bg-[#161622] hover:bg-[#1e1e2d] border border-[#2d2d44] text-[#8e8eba] py-2.5 rounded-xl text-xs font-bold flex justify-center items-center gap-2 transition">
+                <Video size={14} /> LIHAT KAMERA INI
               </button>
-                <button onClick={() => openMultiView(getRelatedCameras(activeCam, 4))} className="w-full bg-[#0d1623] hover:bg-[#131f32] border border-[#1e2d44] text-[#6090d8] py-2.5 rounded-xl text-xs font-bold flex justify-center items-center gap-2 transition">
+                <button onClick={() => setGroupViewCams(getRelatedCameras(activeCam, 4))} className="w-full bg-[#0d1623] hover:bg-[#131f32] border border-[#1e2d44] text-[#6090d8] py-2.5 rounded-xl text-xs font-bold flex justify-center items-center gap-2 transition">
                   <Target size={14} /> {(activeCam.location && activeCam.location !== 'Area Lainnya') ? 'OPEN GROUP IN MULTI-VIEW' : 'OPEN WITH NEAREST CAMERAS'}
                 </button>
             </div>
@@ -446,6 +448,7 @@ export default function MapDashboard() {
 
       {/* 5. SETTINGS OVERLAY MODAL */}
       {showSettings && <SettingsModal onClose={() => setShowSettings(false)} />}
+      {groupViewCams && <GroupViewModal cameras={groupViewCams} onClose={() => setGroupViewCams(null)} />}
     </div>
   );
 }
