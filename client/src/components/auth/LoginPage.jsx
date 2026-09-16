@@ -48,11 +48,11 @@ export default function LoginPage() {
       </div>
 
       {/* Login Card - Sleeker with better Glassmorphism */}
-      <div className="relative z-10 w-full max-w-[340px] p-8 bg-[#0a1220]/60 backdrop-blur-xl border border-white/10 shadow-[0_0_40px_rgba(0,180,255,0.15)] rounded-3xl">
+      <div className="relative z-10 w-full max-w-[280px] sm:max-w-[300px] p-6 bg-[#0a1220]/60 backdrop-blur-xl border border-white/10 shadow-[0_0_40px_rgba(0,180,255,0.15)] rounded-3xl">
         
-        <div className="flex flex-col items-center mb-8 text-center">
+        <div className="flex flex-col items-center mb-6 text-center">
           <div className="mb-4 flex justify-center">
-            <img src="/ais-logo.png" alt="AIS Logo" className="w-16 h-16 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.15)]" />
+            <img src="/ais-logo.png" alt="AIS Logo" className="w-14 h-14 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.15)]" />
           </div>
           <h2 className="text-2xl font-black text-white tracking-tight leading-tight">ACCS <span className="font-light text-cyan-100">AIS</span></h2>
           <p className="text-[9px] uppercase tracking-[0.4em] text-cyan-400 mt-2 font-bold opacity-90">Area CCTV Control</p>
