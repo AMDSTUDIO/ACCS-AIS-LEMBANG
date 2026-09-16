@@ -27,10 +27,10 @@ export default function Navbar() {
       </div>
       
       <div className="flex items-center gap-2 bg-slate-900/50 p-1 rounded-xl border border-slate-800/50">
-        <Link to="/" className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all font-medium text-sm ${isActive('/')}`}>
+        <Link to="/monitor/map" className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all font-medium text-sm ${isActive('/monitor/map')}`}>
           <Map size={16} /> Map View
         </Link>
-        <Link to="/multiview" className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all font-medium text-sm ${isActive('/multiview')}`}>
+        <Link to="/monitor/grid" className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all font-medium text-sm ${isActive('/monitor/grid')}`}>
           <Grid size={16} /> Multi-View
         </Link>
         {user?.role === 'admin' && (

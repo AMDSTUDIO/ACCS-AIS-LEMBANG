@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import axios from 'axios';
+import Clock from './Clock';
 import { useCctvStore } from '../../store/useCctvStore';
 import { useAuthStore } from '../../store/useAuthStore';
 import WebRtcPlayer from '../player/WebRtcPlayer';
@@ -120,7 +121,7 @@ export default function MapDashboard() {
 
   const openMultiView = (camsToOpen) => {
     useCctvStore.setState({ activeMultiViews: camsToOpen });
-    navigate('/multiview');
+    navigate('/monitor/grid');
   };
 
   const mapConfig = settings.map_config || { lat: -6.808722, lng: 107.649002, zoom: 19 };
@@ -216,12 +217,6 @@ export default function MapDashboard() {
        return updated ? updated : c;
     });
     setCameras(newCamerasState);
-
-    updatedCams.forEach(async (cam) => {
-       try {
-         await axios.put(`/api/cameras/${cam.id}`, cam);
-       } catch (err) {}
-    });
   };
 
   const groupedCams = filteredCams.reduce((acc, cam) => {
@@ -252,21 +247,42 @@ export default function MapDashboard() {
       {/* 2. OVERLAYS */}
       <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-start pointer-events-none">
         
-        {/* Header Title & Mobile Menu */}
-        <div className="bg-[#111111]/90 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/5 shadow-xl flex items-center gap-4 pointer-events-auto">
+        {/* Header Information Overlay */}
+        <div className="flex gap-4 pointer-events-auto items-center">
           <button 
-            onClick={() => setIsSidebarOpen(true)}
-            className="md:hidden text-slate-300 hover:text-white transition bg-white/5 p-1.5 rounded-lg border border-white/10"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="md:hidden w-10 h-10 bg-slate-900/90 backdrop-blur-md rounded-xl border border-slate-700/50 shadow-2xl flex items-center justify-center text-white hover:bg-slate-800 hover:scale-105 transition-all"
           >
             <Menu size={20} />
           </button>
-          <div>
-            <h1 className="text-white font-extrabold text-sm tracking-widest leading-tight">ACCS <span className="font-light text-slate-400">AIS LEMBANG</span></h1>
-            <p className="text-[8px] text-slate-500 font-bold tracking-[0.2em] mt-0.5 uppercase">AREA CCTV CONTROL SYSTEM</p>
+
+          <div className="bg-[#111111]/90 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-white/5 shadow-xl flex items-center gap-4">
+            <div>
+              <h1 className="text-white font-extrabold text-sm tracking-widest leading-tight">ACCS <span className="font-light text-slate-400">AIS LEMBANG</span></h1>
+              <p className="text-[8px] text-slate-500 font-bold tracking-[0.2em] mt-0.5 uppercase">AREA CCTV CONTROL SYSTEM</p>
+            </div>
+            
+            <div className="ml-2 pl-4 border-l border-white/10 hidden md:flex items-center">
+              <div className="bg-slate-900/80 backdrop-blur-md px-3 py-1 rounded-lg border border-slate-700/50 flex items-center shadow-inner">
+                <span className="text-cyan-400 font-mono font-bold text-xs tracking-wider"><Clock /></span>
+              </div>
+            </div>
+            
+            <div className="ml-1 hidden md:block pl-2">
+               <button onClick={() => openMultiView(cameras.filter(c => c.is_active).slice(0, 36))} className="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded-lg text-[10px] uppercase font-extrabold transition flex items-center gap-1.5 shadow-[0_0_10px_rgba(37,99,235,0.4)] border border-blue-400/30 tracking-wider">
+                  <Grid size={12} /> FULL CAMERA
+               </button>
+            </div>
           </div>
         </div>
 
         <div className="flex flex-col gap-2 pointer-events-auto items-end">
+          <button 
+            onClick={() => navigate('/portal')}
+            className="bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-700/50 shadow-2xl flex items-center gap-2 text-xs font-bold text-cyan-400 hover:text-cyan-300 hover:bg-slate-800 transition-colors"
+          >
+            ← Kembali ke Portal
+          </button>
           <div className="bg-slate-900/80 backdrop-blur-md p-2 rounded-2xl border border-slate-700/50 shadow-2xl flex items-center gap-1">
             {user?.role === 'superadmin' && (
               <button onClick={() => setShowSettings(true)} className="p-2 hover:bg-slate-700/50 rounded-xl transition text-slate-300 hover:text-white" title="Pengaturan">
@@ -301,9 +317,6 @@ export default function MapDashboard() {
         <div className="flex-1 overflow-y-auto p-1.5 scrollbar-thin scrollbar-thumb-slate-700">
           <div className="px-3 py-1.5 flex justify-between items-center">
             <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Daftar Kamera ({filteredCams.length})</div>
-            <button onClick={() => openMultiView(cameras.filter(c => c.is_active).slice(0, 36))} className="text-[9px] bg-blue-600 hover:bg-blue-500 text-white px-2 py-0.5 rounded font-bold transition flex items-center gap-1" title="Lihat 32 Channel">
-              <Grid size={10} /> 32-CH GRID
-            </button>
           </div>
           
           {Object.entries(groupedCams).map(([group, groupCameras]) => {
