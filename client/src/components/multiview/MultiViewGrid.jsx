@@ -11,9 +11,27 @@ export default function MultiViewGrid() {
   const [expandedIndex, setExpandedIndex] = useState(null);
   const navigate = useNavigate();
 
-  const gridCols = layout === 4 ? 'grid-cols-2' : layout === 9 ? 'grid-cols-3' : 'grid-cols-4';
-  const gridRows = layout === 4 ? 'grid-rows-2' : layout === 9 ? 'grid-rows-3' : 'grid-rows-4';
-  const gridClass = `${gridCols} ${gridRows}`;
+  const getGridCols = () => {
+    switch(layout) {
+      case 4: return 'grid-cols-2';
+      case 9: return 'grid-cols-3';
+      case 16: return 'grid-cols-4';
+      case 25: return 'grid-cols-5';
+      case 36: return 'grid-cols-6';
+      default: return 'grid-cols-4';
+    }
+  };
+  const getGridRows = () => {
+    switch(layout) {
+      case 4: return 'grid-rows-2';
+      case 9: return 'grid-rows-3';
+      case 16: return 'grid-rows-4';
+      case 25: return 'grid-rows-5';
+      case 36: return 'grid-rows-6';
+      default: return 'grid-rows-4';
+    }
+  };
+  const gridClass = `${getGridCols()} ${getGridRows()}`;
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -71,6 +89,8 @@ export default function MultiViewGrid() {
       case 4: return <LayoutGrid size={14} />;
       case 9: return <Grid3X3 size={14} />;
       case 16: return <Grid size={14} />;
+      case 25: return <Grid size={14} />;
+      case 36: return <Grid size={14} />;
       default: return <LayoutGrid size={14} />;
     }
   };
@@ -113,7 +133,7 @@ export default function MultiViewGrid() {
             </button>
             <div className="h-4 w-px bg-white/10"></div>
             <div className="flex gap-1 bg-black/20 p-1 rounded-lg border border-white/5">
-              {[4, 9, 16].map(num => (
+              {[4, 9, 16, 25, 36].map(num => (
                 <button 
                   key={num}
                   onClick={() => { setLayout(num); setExpandedIndex(null); }}
