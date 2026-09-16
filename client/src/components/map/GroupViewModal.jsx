@@ -1,6 +1,6 @@
 import React from 'react';
 import { X, Maximize2, Move } from 'lucide-react';
-import WebRTCPlayer from '../multiview/WebRTCPlayer';
+import WebRTCPlayer from '../player/WebRtcPlayer';
 
 export default function GroupViewModal({ cameras, onClose }) {
   if (!cameras || cameras.length === 0) return null;
@@ -36,8 +36,8 @@ export default function GroupViewModal({ cameras, onClose }) {
           <div 
             className="grid gap-2 h-full"
             style={{
-              gridTemplateColumns: epeat(, minmax(0, 1fr)),
-              gridTemplateRows: count > 2 ? epeat(, minmax(200px, 1fr)) : '1fr',
+              gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))`,
+              gridTemplateRows: count > 2 ? `repeat(${gridRows}, minmax(200px, 1fr))` : '1fr',
               minHeight: 'min-content'
             }}
           >
