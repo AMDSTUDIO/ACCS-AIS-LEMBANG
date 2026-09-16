@@ -25,10 +25,10 @@ export default function GroupViewModal({ cameras, onClose }) {
   }[gridCols] || 'md:grid-cols-3';
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black flex flex-col pointer-events-auto animate-in fade-in duration-300">
-      <div className="h-14 bg-[#111827] border-b border-slate-800 flex items-center justify-between px-6 shrink-0">
+    <div className="fixed inset-0 z-[100] bg-slate-950/80 backdrop-blur-xl flex flex-col pointer-events-auto animate-in fade-in duration-300">
+      <div className="h-14 bg-transparent border-b border-white/10 flex items-center justify-between px-6 shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-blue-900/50 border border-blue-500/30 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-blue-500/20 border border-blue-500/30 shadow-[0_0_15px_rgba(0,150,255,0.2)] flex items-center justify-center">
             <Move size={16} className="text-blue-400" />
           </div>
           <div>
@@ -40,14 +40,14 @@ export default function GroupViewModal({ cameras, onClose }) {
           <X size={16} /> TUTUP
         </button>
       </div>
-      <div className="flex-1 p-2 bg-black overflow-hidden flex flex-col">
+      <div className="flex-1 p-2 bg-transparent overflow-hidden flex flex-col">
         <div 
           className={`grid gap-2 w-full h-full overflow-y-auto md:overflow-hidden auto-rows-[300px] md:auto-rows-fr grid-cols-1 ${mdColsClass}`}
         >
           {cameras.map(cam => (
             <div 
               key={cam.id} 
-              className="bg-[#050505] border border-slate-800 rounded-xl overflow-hidden relative group"
+              className="glass-panel !rounded-2xl rounded-xl overflow-hidden relative group"
               onDoubleClick={(e) => {
                 if (!document.fullscreenElement) {
                   e.currentTarget.requestFullscreen().catch(err => console.log(err));

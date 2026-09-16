@@ -316,7 +316,7 @@ export default function MapDashboard() {
               placeholder="Cari lokasi..." 
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full bg-[#1a1a1a] border border-[#333] rounded-lg py-1.5 pl-9 pr-3 text-xs text-white focus:outline-none focus:border-blue-500 transition placeholder:text-slate-500"
+              className="w-full bg-[#1a1a1a] border border-[#333] rounded-lg py-1.5 pl-9 pr-3 text-xs text-white focus:outline-none focus:border-cyan-500/50 focus:bg-black/40 transition placeholder:text-slate-500"
             />
           </div>
         </div>
@@ -436,7 +436,7 @@ export default function MapDashboard() {
               <div className="w-2 h-2 bg-[#2db26a] rounded-full shadow-[0_0_5px_#2db26a]"></div> LIVE
             </div>
 
-            <div className="bg-[#151515] border border-[#222] p-3 rounded-lg flex flex-col gap-1 mt-1">
+            <div className="bg-white/5 border border-[#222] p-3 rounded-lg flex flex-col gap-1 mt-1">
               <span className="text-[10px] text-slate-500">Nama Kamera</span>
               <span className="text-xs text-slate-200 font-semibold">{activeCam.name}</span>
             </div>

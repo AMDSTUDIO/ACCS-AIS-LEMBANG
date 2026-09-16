@@ -190,7 +190,7 @@ export default function SettingsModal({ onClose }) {
       <div className="bg-[#0f172a] border border-slate-700 w-full max-w-5xl h-[85vh] rounded-2xl shadow-2xl flex overflow-hidden">
         
         {/* SIDEBAR TABS */}
-        <div className="w-64 bg-[#0a0f1c] border-r border-slate-800 p-4 flex flex-col gap-2">
+        <div className="w-64 bg-[#0a0f1c] border-r border-white/10 p-4 flex flex-col gap-2">
           <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Pengaturan Sistem</div>
           
           <button onClick={() => setActiveTab('cctv')} className={`flex items-center gap-3 p-3 rounded-xl transition font-medium ${activeTab === 'cctv' ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.3)]' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}`}>
@@ -213,7 +213,7 @@ export default function SettingsModal({ onClose }) {
 
         {/* CONTENT AREA */}
         <div className="flex-1 flex flex-col h-full bg-[#111827]">
-          <div className="h-16 border-b border-slate-800 flex items-center justify-between px-6 bg-[#0a0f1c]">
+          <div className="h-16 border-b border-white/10 flex items-center justify-between px-6 bg-[#0a0f1c]">
             <h2 className="text-base font-bold text-slate-100">
               {activeTab === 'cctv' ? 'Data Kamera CCTV' : activeTab === 'nvr' ? 'Pengaturan Server NVR' : 'Pusat Koordinat Peta Default'}
             </h2>
@@ -370,9 +370,9 @@ export default function SettingsModal({ onClose }) {
                   </div>
                 </form>
 
-                <div className="border border-slate-800 rounded-2xl overflow-hidden bg-slate-900/50">
+                <div className="border border-white/10 rounded-2xl overflow-hidden bg-slate-900/50">
                   <table className="w-full text-left text-sm text-slate-300">
-                    <thead className="bg-[#0a0f1c] text-xs uppercase text-slate-500 font-bold border-b border-slate-800">
+                    <thead className="bg-[#0a0f1c] text-xs uppercase text-slate-500 font-bold border-b border-white/10">
                       <tr>
                         <th className="py-3 px-4">Username</th>
                         <th className="py-3 px-4">Role</th>
@@ -411,7 +411,7 @@ export default function SettingsModal({ onClose }) {
             {/* CCTV TAB */}
             {activeTab === 'cctv' && (
               <div>
-                <div className="flex gap-2 mb-6 bg-slate-900 p-1 rounded-lg w-max border border-slate-800">
+                <div className="flex gap-2 mb-6 bg-slate-900 p-1 rounded-lg w-max border border-white/10">
                   <button onClick={() => setCameraMode('single')} className={`px-4 py-1.5 rounded-md text-sm font-medium transition ${cameraMode === 'single' ? 'bg-slate-700 text-white shadow' : 'text-slate-400 hover:text-white'}`}>Tambah Manual</button>
                   <button onClick={() => setCameraMode('batch')} className={`px-4 py-1.5 rounded-md text-sm font-medium transition ${cameraMode === 'batch' ? 'bg-slate-700 text-white shadow' : 'text-slate-400 hover:text-white'}`}>Generate Massal (NVR)</button>
                 </div>
@@ -533,9 +533,9 @@ export default function SettingsModal({ onClose }) {
                 )}
 
                 {/* TABLE LIST */}
-                <div className="border border-slate-800 rounded-2xl overflow-hidden bg-slate-900/50">
+                <div className="border border-white/10 rounded-2xl overflow-hidden bg-slate-900/50">
                   <table className="w-full text-left text-sm text-slate-300">
-                    <thead className="bg-[#0a0f1c] text-xs uppercase text-slate-500 font-bold border-b border-slate-800">
+                    <thead className="bg-[#0a0f1c] text-xs uppercase text-slate-500 font-bold border-b border-white/10">
                       <tr>
                         <th className="py-3 px-4">Nama Kamera</th>
                         <th className="py-3 px-4">Channel</th>

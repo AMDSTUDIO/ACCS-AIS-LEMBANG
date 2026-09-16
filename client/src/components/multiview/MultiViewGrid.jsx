@@ -159,7 +159,7 @@ export default function MultiViewGrid() {
         </div>
         
         {/* GRID */}
-        <div className={`flex-1 bg-[#02050A] p-2 grid ${expandedIndex !== null ? 'grid-cols-1 grid-rows-1' : gridClass} gap-2 min-h-0`}>
+        <div className={`flex-1 bg-transparent p-2 grid ${expandedIndex !== null ? 'grid-cols-1 grid-rows-1' : gridClass} gap-2 min-h-0`}>
           {(expandedIndex !== null ? [expandedIndex] : Array.from({ length: layout }).map((_, i) => i)).map((i) => {
             const cam = activeMultiViews[i];
             const isMainStream = expandedIndex !== null;

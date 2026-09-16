@@ -39,16 +39,16 @@ export default function LoginPage() {
         ></div>
         
         {/* Darkening & Color Overlay for Readability */}
-        <div className="absolute inset-0 bg-[#050B14]/80 mix-blend-multiply"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#050B14] via-[#050B14]/50 to-transparent"></div>
+        <div className="absolute inset-0 bg-slate-950/70 mix-blend-multiply backdrop-blur-sm"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-transparent"></div>
         
         {/* Glowing Accents */}
-        <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-cyan-400/10 rounded-full blur-[120px]"></div>
+        <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-cyan-400/5 rounded-full blur-[120px]"></div>
       </div>
 
       {/* Login Card - Sleeker with better Glassmorphism */}
-      <div className="relative z-10 w-full max-w-[280px] sm:max-w-[300px] p-6 bg-[#0a1220]/60 backdrop-blur-xl border border-white/10 shadow-[0_0_40px_rgba(0,180,255,0.15)] rounded-3xl">
+      <div className="relative z-10 w-full max-w-[280px] sm:max-w-[300px] p-6 glass-panel rounded-[2rem] shadow-[0_0_50px_rgba(0,0,0,0.5)]">
         
         <div className="flex flex-col items-center mb-6 text-center">
           <div className="mb-4 flex justify-center">
@@ -75,7 +75,7 @@ export default function LoginPage() {
               value={username}
               onChange={e => setUsername(e.target.value)}
               placeholder="Username" 
-              className="w-full bg-[#050B14]/80 border border-white/5 rounded-xl py-3 pl-10 pr-4 text-xs text-white focus:outline-none focus:border-cyan-500/50 focus:shadow-[0_0_15px_rgba(0,255,255,0.1)] transition-all placeholder:text-slate-600"
+              className="w-full bg-black/20 border border-white/10 rounded-2xl backdrop-blur-md py-3 pl-10 pr-4 text-xs text-white focus:outline-none focus:border-cyan-400/50 focus:bg-black/40 focus:ring-1 focus:ring-cyan-400/50 transition-all placeholder:text-slate-600"
             />
           </div>
           
@@ -89,14 +89,14 @@ export default function LoginPage() {
               value={password}
               onChange={e => setPassword(e.target.value)}
               placeholder="Password" 
-              className="w-full bg-[#050B14]/80 border border-white/5 rounded-xl py-3 pl-10 pr-4 text-xs text-white focus:outline-none focus:border-cyan-500/50 focus:shadow-[0_0_15px_rgba(0,255,255,0.1)] transition-all placeholder:text-slate-600"
+              className="w-full bg-black/20 border border-white/10 rounded-2xl backdrop-blur-md py-3 pl-10 pr-4 text-xs text-white focus:outline-none focus:border-cyan-400/50 focus:bg-black/40 focus:ring-1 focus:ring-cyan-400/50 transition-all placeholder:text-slate-600"
             />
           </div>
 
           <button 
             type="submit" 
             disabled={loading}
-            className="mt-2 w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold py-3 rounded-xl transition-all shadow-[0_0_20px_rgba(0,180,255,0.2)] hover:shadow-[0_0_30px_rgba(0,180,255,0.4)] disabled:opacity-50 flex justify-center items-center gap-2 text-xs tracking-wider"
+            className="mt-2 w-full bg-gradient-to-r from-cyan-600/80 to-blue-600/80 hover:from-cyan-500 hover:to-blue-500 backdrop-blur-md border border-white/10 text-white font-bold py-3 rounded-2xl transition-all shadow-lg hover:shadow-[0_0_20px_rgba(0,200,255,0.3)] disabled:opacity-50 flex justify-center items-center gap-2 text-xs tracking-wider"
           >
             {loading ? <Loader2 size={16} className="animate-spin" /> : 'SECURE LOGIN'}
           </button>

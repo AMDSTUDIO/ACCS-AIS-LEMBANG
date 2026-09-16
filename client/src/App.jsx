@@ -12,7 +12,7 @@ const ProtectedRoute = ({ children }) => {
   const user = useAuthStore(state => state.user);
   if (!user) return <Navigate to="/login" />;
   return (
-    <div className="w-screen h-screen overflow-hidden bg-slate-900 text-white relative font-sans">
+    <div className="w-screen h-screen overflow-hidden bg-slate-950 text-white relative font-sans">
       {children}
     </div>
   );
