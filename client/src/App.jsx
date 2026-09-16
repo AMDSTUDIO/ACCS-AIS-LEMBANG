@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/useAuthStore';
-import Login from './components/auth/Login';
+import Login from './components/auth/LoginPage';
 import MapDashboard from './components/map/MapDashboard';
 import MultiViewGrid from './components/multiview/MultiViewGrid';
 import axios from 'axios';
