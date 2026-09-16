@@ -17,9 +17,19 @@ export default function PortalHub() {
   }, []);
 
   useEffect(() => {
-    // Mocking status fetch for now, replace with actual API
     setServerStatus('Online');
-    setActiveCameras('32/32 Online');
+    
+    // Fetch actual camera status
+    axios.get('/api/cameras')
+      .then(res => {
+        const cams = res.data;
+        const activeCount = cams.filter(c => c.is_active).length;
+        setActiveCameras(`${activeCount}/${cams.length} Online`);
+      })
+      .catch(err => {
+        setActiveCameras('0/0 Online');
+        setServerStatus('Error');
+      });
   }, []);
 
   const handleLogout = async () => {
@@ -65,49 +75,52 @@ export default function PortalHub() {
 
   return (
     <div className="min-h-screen bg-[#050B14] text-white flex flex-col font-sans relative overflow-hidden">
-      {/* Background accents */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-[800px] h-[800px] bg-blue-600/5 rounded-full blur-[150px]"></div>
-        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-cyan-600/5 rounded-full blur-[120px]"></div>
-      </div>
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 z-0 opacity-40 bg-cover bg-center"
+        style={{ backgroundImage: 'url(/bg-cctv.jpg)' }}
+      ></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-[#050B14]/80 via-[#050B14]/60 to-[#050B14] z-0 pointer-events-none"></div>
 
       {/* Header Bar */}
-      <header className="relative z-10 bg-[#0a1220]/80 backdrop-blur-md border-b border-white/10 p-4 flex flex-col md:flex-row justify-between items-center gap-4">
-        <div className="flex items-center gap-3">
-          <div className="bg-gradient-to-br from-cyan-500 to-blue-600 p-2 rounded-lg">
+      <header className="relative z-10 bg-[#0a1220]/60 backdrop-blur-xl border-b border-white/10 p-4 px-8 flex flex-col md:flex-row justify-between items-center gap-4 shadow-2xl shadow-blue-900/20">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(34,211,238,0.4)]">
             <Activity size={24} className="text-white" />
           </div>
           <div>
-            <h1 className="text-xl font-black tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+            <h1 className="text-2xl font-black tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
               ACCS
             </h1>
-            <p className="text-[10px] text-cyan-400 tracking-[0.2em] uppercase font-semibold">Area CCTV Control System</p>
+            <p className="text-[9px] text-cyan-400 tracking-[0.3em] uppercase font-bold">Area CCTV Control System</p>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
+        <div className="flex items-center gap-6 bg-black/40 backdrop-blur-md px-6 py-2.5 rounded-2xl border border-white/10">
           <div className="flex items-center gap-2 text-slate-300">
             <Clock size={16} className="text-cyan-400" />
-            <span className="font-mono text-xs">{time.toLocaleTimeString()}</span>
+            <span className="font-mono text-sm font-bold tracking-widest">{time.toLocaleTimeString()}</span>
           </div>
+          <div className="w-px h-6 bg-white/10"></div>
           <div className="flex items-center gap-2 text-slate-300">
             <Server size={16} className={serverStatus === 'Online' ? 'text-emerald-400' : 'text-red-400'} />
-            <span className="text-xs">Server: <strong className={serverStatus === 'Online' ? 'text-emerald-400' : 'text-red-400'}>{serverStatus}</strong></span>
+            <span className="text-xs font-bold uppercase tracking-wider"><strong className={serverStatus === 'Online' ? 'text-emerald-400' : 'text-red-400'}>{serverStatus}</strong></span>
           </div>
+          <div className="w-px h-6 bg-white/10"></div>
           <div className="flex items-center gap-2 text-slate-300">
             <Activity size={16} className="text-blue-400" />
-            <span className="text-xs">Cam: <strong className="text-white">{activeCameras}</strong></span>
+            <span className="text-xs font-bold tracking-wider">CCTV: <strong className="text-white">{activeCameras}</strong></span>
           </div>
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
-            <User size={14} className="text-cyan-400" />
-            <span className="text-xs font-semibold">{user?.username || 'Operator'}</span>
+          <div className="flex items-center gap-2 bg-gradient-to-r from-cyan-900/40 to-blue-900/40 px-4 py-2 rounded-xl border border-cyan-500/30">
+            <User size={16} className="text-cyan-400" />
+            <span className="text-xs font-bold tracking-widest uppercase">{user?.username || 'Operator'}</span>
           </div>
           <button 
             onClick={handleLogout}
-            className="flex items-center gap-2 text-xs font-bold text-red-400 hover:text-red-300 hover:bg-red-400/10 px-4 py-2 rounded-lg transition-colors border border-transparent hover:border-red-400/30"
+            className="flex items-center gap-2 text-xs font-bold text-red-400 hover:text-red-300 bg-red-950/30 hover:bg-red-900/50 px-4 py-2 rounded-xl transition-all border border-red-500/30 hover:shadow-[0_0_15px_rgba(239,68,68,0.3)]"
           >
             <LogOut size={16} />
             LOGOUT
@@ -117,30 +130,39 @@ export default function PortalHub() {
 
       {/* Main Content */}
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center p-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Command Center Portal</h2>
-          <p className="text-slate-400 max-w-2xl mx-auto">Pilih mode operasional sistem untuk memulai monitoring. Sistem dioptimalkan untuk meminimalkan beban resources dengan mengatur pembukaan stream.</p>
+        <div className="text-center mb-16 max-w-3xl">
+          <h2 className="text-5xl font-black mb-6 tracking-tight text-white drop-shadow-2xl">
+            COMMAND CENTER <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">PORTAL</span>
+          </h2>
+          <p className="text-slate-400 text-lg leading-relaxed">
+            Pilih mode operasional sistem untuk memulai monitoring. Akses ke setiap mode disesuaikan dengan peran dan hak akses Anda.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full">
           {cards.map((card, idx) => (
             <div 
               key={idx}
-              className={`group flex flex-col bg-[#0a1220]/60 backdrop-blur-xl border border-white/10 rounded-3xl p-8 transition-all duration-300 ${card.hoverBorder} ${card.hoverShadow} bg-gradient-to-b ${card.gradient}`}
+              className={`group flex flex-col bg-[#0a1220]/70 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 transition-all duration-500 hover:-translate-y-2 ${card.hoverBorder} ${card.hoverShadow} relative overflow-hidden`}
             >
-              <div className="flex-1">
-                {card.icon}
-                <h3 className="text-2xl font-bold mb-3">{card.title}</h3>
-                <p className="text-sm text-slate-400 leading-relaxed">
+              <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br ${card.gradient}`}></div>
+              
+              <div className="relative z-10 flex-1">
+                <div className="bg-black/40 w-20 h-20 rounded-2xl flex items-center justify-center mb-6 border border-white/5 group-hover:scale-110 transition-transform duration-500">
+                  {card.icon}
+                </div>
+                <h3 className="text-2xl font-black mb-4 tracking-wide">{card.title}</h3>
+                <p className="text-sm text-slate-400 leading-relaxed font-medium">
                   {card.description}
                 </p>
               </div>
               
               <button 
                 onClick={() => navigate(card.route)}
-                className="mt-8 w-full py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors group-hover:border-white/20"
+                className="relative z-10 mt-8 w-full py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl font-black tracking-widest flex items-center justify-center gap-3 transition-all group-hover:border-white/30 group-hover:bg-white/10"
               >
                 {card.buttonText}
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity group-hover:translate-x-1 duration-300">→</span>
               </button>
             </div>
           ))}

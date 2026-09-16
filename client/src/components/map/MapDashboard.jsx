@@ -268,41 +268,39 @@ export default function MapDashboard() {
               </div>
             </div>
             
-            <div className="ml-1 hidden md:block pl-2">
+            <div className="ml-1 hidden md:block pl-2 border-l border-white/10">
                <button onClick={() => openMultiView(cameras.filter(c => c.is_active).slice(0, 36))} className="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded-lg text-[10px] uppercase font-extrabold transition flex items-center gap-1.5 shadow-[0_0_10px_rgba(37,99,235,0.4)] border border-blue-400/30 tracking-wider">
                   <Grid size={12} /> FULL CAMERA
                </button>
             </div>
+            
+            <div className="ml-1 pl-2 border-l border-white/10 hidden md:flex items-center gap-2">
+              <button 
+                onClick={() => navigate('/portal')}
+                className="bg-slate-900/50 hover:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700/50 text-[10px] font-bold text-cyan-400 hover:text-cyan-300 transition-colors"
+              >
+                PORTAL
+              </button>
+              {user?.role === 'superadmin' && (
+                <button onClick={() => setShowSettings(true)} className="p-1.5 bg-slate-900/50 hover:bg-slate-800 rounded-lg border border-slate-700/50 transition text-slate-300 hover:text-white" title="Pengaturan">
+                  <Settings size={14} />
+                </button>
+              )}
+              <button onClick={handleLogout} className="p-1.5 bg-slate-900/50 hover:bg-red-500/20 rounded-lg border border-slate-700/50 transition text-slate-300 hover:text-red-400" title="Logout">
+                <LogOut size={14} />
+              </button>
+            </div>
           </div>
         </div>
 
-        <div className="flex flex-col gap-2 pointer-events-auto items-end">
-          <button 
-            onClick={() => navigate('/portal')}
-            className="bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-700/50 shadow-2xl flex items-center gap-2 text-xs font-bold text-cyan-400 hover:text-cyan-300 hover:bg-slate-800 transition-colors"
-          >
-            ← Kembali ke Portal
-          </button>
-          <div className="bg-slate-900/80 backdrop-blur-md p-2 rounded-2xl border border-slate-700/50 shadow-2xl flex items-center gap-1">
-            {user?.role === 'superadmin' && (
-              <button onClick={() => setShowSettings(true)} className="p-2 hover:bg-slate-700/50 rounded-xl transition text-slate-300 hover:text-white" title="Pengaturan">
-                <Settings size={20} />
-              </button>
-            )}
-            <div className="w-px h-6 bg-slate-700/50 mx-1"></div>
-            <button onClick={handleLogout} className="p-2 hover:bg-red-500/20 rounded-xl transition text-slate-300 hover:text-red-400" title="Logout">
-              <LogOut size={20} />
-            </button>
-          </div>
-        </div>
       </div>
 
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && <div className="absolute inset-0 bg-black/60 z-[30] md:hidden backdrop-blur-sm pointer-events-auto" onClick={() => setIsSidebarOpen(false)}></div>}
 
-      {/* 3. FLOATING LEFT SIDEBAR - DIRECTORY */}
-      <div className={`absolute top-24 bottom-6 w-72 bg-[#111111]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl z-[40] flex flex-col overflow-hidden transition-all duration-300 pointer-events-auto ${isSidebarOpen ? 'left-4' : '-left-80 md:left-4'}`}>
-        <div className="p-3 border-b border-[#222]">
+      {/* 3. SIDEBAR - DAFTAR KAMERA */}
+      <div className={`absolute top-24 w-72 max-h-[calc(100vh-8rem)] h-fit bg-[#111111]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl z-[40] flex flex-col overflow-hidden transition-all duration-300 pointer-events-auto ${isSidebarOpen ? 'left-4' : '-left-80 md:left-4'}`}>
+        <div className="p-3 border-b border-[#222] shrink-0">
           <div className="relative">
             <Search className="absolute left-3 top-2 text-slate-400" size={14} />
             <input 
