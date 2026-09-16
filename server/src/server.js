@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth');
 const cameraRoutes = require('./routes/cameras');
 const settingsRoutes = require('./routes/settings');
 const webrtcRoutes = require('./routes/webrtc');
+const usersRoutes = require('./routes/users');
 const { initDb } = require('./db');
 
 const app = express();
@@ -22,6 +23,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/cameras', cameraRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/webrtc', webrtcRoutes);
+app.use('/api/users', usersRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

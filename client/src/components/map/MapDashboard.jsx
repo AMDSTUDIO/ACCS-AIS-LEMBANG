@@ -276,10 +276,10 @@ export default function MapDashboard() {
             
             <div className="ml-1 pl-2 border-l border-white/10 hidden md:flex items-center gap-2">
               <button 
-                onClick={() => navigate('/portal')}
-                className="bg-slate-900/50 hover:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700/50 text-[10px] font-bold text-cyan-400 hover:text-cyan-300 transition-colors"
+                onClick={() => navigate('/monitor/wall')}
+                className="bg-slate-900/50 hover:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700/50 text-[10px] font-bold text-cyan-400 hover:text-cyan-300 transition-colors tracking-widest"
               >
-                PORTAL
+                WALLPANEL
               </button>
               {user?.role === 'superadmin' && (
                 <button onClick={() => setShowSettings(true)} className="p-1.5 bg-slate-900/50 hover:bg-slate-800 rounded-lg border border-slate-700/50 transition text-slate-300 hover:text-white" title="Pengaturan">

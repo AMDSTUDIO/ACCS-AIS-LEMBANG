@@ -13,9 +13,9 @@ router.post('/login', (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
     
-    const token = jwt.sign({ id: user.id, username: user.username, role: user.role }, process.env.JWT_SECRET || 'super_secret_jwt_key_change_in_production', { expiresIn: '1d' });
+    const token = jwt.sign({ id: user.id, username: user.username, role: user.role, permissions: user.permissions }, process.env.JWT_SECRET || 'super_secret_jwt_key_change_in_production', { expiresIn: '1d' });
     res.cookie('token', token, { httpOnly: true, secure: false, sameSite: 'lax' });
-    res.json({ message: 'Logged in', user: { id: user.id, username: user.username, role: user.role } });
+    res.json({ message: 'Logged in', user: { id: user.id, username: user.username, role: user.role, permissions: user.permissions } });
   });
 });
 
@@ -25,7 +25,10 @@ router.post('/logout', (req, res) => {
 });
 
 router.get('/me', authMiddleware, (req, res) => {
-  res.json({ user: req.user });
+  db.get('SELECT id, username, role, permissions FROM users WHERE id = ?', [req.user.id], (err, user) => {
+    if (err || !user) return res.status(401).json({ error: 'User not found' });
+    res.json({ user });
+  });
 });
 
 module.exports = router;

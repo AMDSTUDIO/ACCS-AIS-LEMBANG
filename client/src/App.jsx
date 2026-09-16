@@ -39,12 +39,11 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/portal" element={<ProtectedRoute><PortalHub /></ProtectedRoute>} />
         <Route path="/monitor/map" element={<ProtectedRoute><MapDashboard /></ProtectedRoute>} />
         <Route path="/monitor/grid" element={<ProtectedRoute><MultiViewGrid /></ProtectedRoute>} />
         <Route path="/monitor/wall" element={<ProtectedRoute><NocWallpanel /></ProtectedRoute>} />
-        <Route path="/" element={<Navigate to="/portal" replace />} />
-        <Route path="*" element={<Navigate to="/portal" replace />} />
+        <Route path="/" element={<Navigate to="/monitor/map" replace />} />
+        <Route path="*" element={<Navigate to="/monitor/map" replace />} />
       </Routes>
     </Router>
   );

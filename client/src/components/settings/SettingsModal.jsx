@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useCctvStore } from '../../store/useCctvStore';
-import { X, Save, Plus, Trash, Server, MapIcon, Video, Crosshair, MapPin, Edit } from 'lucide-react';
+import { X, Save, Plus, Trash, Server, MapIcon, Video, Crosshair, MapPin, Edit, Users, UserPlus } from 'lucide-react';
 import { MapContainer, TileLayer, useMapEvents, useMap } from 'react-leaflet';
 
 function MiniMapEvents({ setMapConfig }) {
@@ -34,22 +34,66 @@ export default function SettingsModal({ onClose }) {
   const [newCam, setNewCam] = useState({ id: null, name: '', location: '', channel: 1, lat: -6.808722, lng: 107.649002, rtsp_url: '' });
   const [batchConfig, setBatchConfig] = useState({ prefix: 'CAM-', start: 1, end: 16 });
   const [cameraMode, setCameraMode] = useState('single');
+  const [usersList, setUsersList] = useState([]);
+  const [newUser, setNewUser] = useState({ id: null, username: '', password: '', role: 'operator', permissions: 'all' });
+
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
-    const [cams, sets] = await Promise.all([
+    const [cams, sets, usersData] = await Promise.all([
       axios.get('/api/cameras'),
-      axios.get('/api/settings')
+      
+      axios.get('/api/settings'),
+      axios.get('/api/users').catch(() => ({ data: [] }))
+
     ]);
     setCameras(cams.data);
     if (sets.data.map_config) { 
       setMapConfig(sets.data.map_config); 
       setNewCam(prev => ({ ...prev, lat: sets.data.map_config.lat || -6.808722, lng: sets.data.map_config.lng || 107.649002 }));
     }
+    
     if (sets.data.nvr_config) setNvrConfig(sets.data.nvr_config);
+    setUsersList(usersData.data || []);
+
+  };
+
+  
+
+  const saveUser = async (e) => {
+    e.preventDefault();
+    try {
+      if (newUser.id) {
+        await axios.put(`/api/users/${newUser.id}`, newUser);
+      } else {
+        await axios.post('/api/users', newUser);
+      }
+      setNewUser({ id: null, username: '', password: '', role: 'operator', permissions: 'all' });
+      fetchData();
+    } catch (err) {
+      alert(err.response?.data?.error || 'Gagal menyimpan user');
+    }
+  };
+
+  const deleteUser = async (id) => {
+    if (!confirm('Hapus user ini?')) return;
+    try {
+      await axios.delete(`/api/users/${id}`);
+      fetchData();
+    } catch (err) {
+      alert('Gagal menghapus user');
+    }
+  };
+
+  const editUser = (u) => {
+    let perms = u.permissions;
+    if (typeof perms === 'string' && perms !== 'all' && perms !== '"all"') {
+      try { perms = JSON.parse(perms); } catch(e){}
+    }
+    setNewUser({ ...u, password: '', permissions: perms });
   };
 
   const saveConfig = async (key, val) => {
@@ -161,6 +205,10 @@ export default function SettingsModal({ onClose }) {
             <MapIcon size={18} />
             Konfigurasi Peta
           </button>
+          <button onClick={() => setActiveTab('users')} className={`flex items-center gap-3 p-3 rounded-xl transition font-medium ${activeTab === 'users' ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.3)]' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}`}>
+            <Users size={18} />
+            Manajemen User (RBAC)
+          </button>
         </div>
 
         {/* CONTENT AREA */}
@@ -237,6 +285,94 @@ export default function SettingsModal({ onClose }) {
                     <Save size={18} /> Simpan Koneksi NVR
                   </button>
                 </form>
+              </div>
+            )}
+
+            
+            {/* USERS TAB */}
+            {activeTab === 'users' && (
+              <div className="max-w-4xl">
+                <form onSubmit={saveUser} className="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl mb-8 space-y-4">
+                  <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                    <UserPlus size={20} className="text-blue-400" /> 
+                    {newUser.id ? 'Edit Pengguna' : 'Tambah Pengguna Baru'}
+                  </h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs text-slate-400 mb-1">Username</label>
+                      <input type="text" required value={newUser.username} onChange={e=>setNewUser({...newUser, username:e.target.value})} className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-blue-500 outline-none" placeholder="Username" />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-slate-400 mb-1">{newUser.id ? 'Password Baru (Kosongkan jika tidak diubah)' : 'Password'}</label>
+                      <input type={newUser.id ? "text" : "password"} required={!newUser.id} value={newUser.password} onChange={e=>setNewUser({...newUser, password:e.target.value})} className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-blue-500 outline-none" placeholder="***" />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-slate-400 mb-1">Role / Peran</label>
+                      <select value={newUser.role} onChange={e=>setNewUser({...newUser, role:e.target.value})} className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-blue-500 outline-none">
+                        <option value="operator">Operator (Melihat Saja)</option>
+                        <option value="admin">Admin (Kelola CCTV)</option>
+                        <option value="superadmin">Superadmin (Kelola Semua)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs text-slate-400 mb-1">Akses Kamera (ID array atau 'all')</label>
+                      <input type="text" value={Array.isArray(newUser.permissions) ? JSON.stringify(newUser.permissions) : newUser.permissions} onChange={e=>{
+                        let val = e.target.value;
+                        if(val !== 'all' && val.startsWith('[')){
+                          try { val = JSON.parse(val); } catch(err){}
+                        }
+                        setNewUser({...newUser, permissions:val})
+                      }} className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-blue-500 outline-none" placeholder="all atau [1, 2, 3]" />
+                      <p className="text-[10px] text-slate-500 mt-1">Contoh: all (untuk semua) atau [1, 2, 3] (hanya lihat ID 1,2,3)</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 pt-2">
+                    <button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold transition">
+                      {newUser.id ? 'Simpan Perubahan User' : 'Buat User Baru'}
+                    </button>
+                    {newUser.id && (
+                      <button type="button" onClick={() => setNewUser({ id: null, username: '', password: '', role: 'operator', permissions: 'all' })} className="bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-xl font-bold transition">
+                        Batal
+                      </button>
+                    )}
+                  </div>
+                </form>
+
+                <div className="border border-slate-800 rounded-2xl overflow-hidden bg-slate-900/50">
+                  <table className="w-full text-left text-sm text-slate-300">
+                    <thead className="bg-[#0a0f1c] text-xs uppercase text-slate-500 font-bold border-b border-slate-800">
+                      <tr>
+                        <th className="py-3 px-4">Username</th>
+                        <th className="py-3 px-4">Role</th>
+                        <th className="py-3 px-4">Akses CCTV</th>
+                        <th className="py-3 px-4 text-right">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800/50">
+                      {usersList.map(u => (
+                        <tr key={u.id} className={`hover:bg-slate-800/50 transition-colors ${newUser.id === u.id ? 'bg-blue-900/30' : ''}`}>
+                          <td className="py-3 px-4 text-white font-medium">{u.username}</td>
+                          <td className="py-3 px-4">
+                            <span className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${u.role === 'superadmin' ? 'bg-red-900/50 text-red-400 border border-red-500/30' : u.role === 'admin' ? 'bg-blue-900/50 text-blue-400 border border-blue-500/30' : 'bg-slate-800 text-slate-400 border border-slate-700'}`}>
+                              {u.role}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 text-xs font-mono text-slate-400">{typeof u.permissions === 'string' ? u.permissions : JSON.stringify(u.permissions)}</td>
+                          <td className="py-3 px-4 text-right">
+                            <div className="flex justify-end gap-1">
+                              <button onClick={() => editUser(u)} className="p-2 text-slate-500 hover:text-blue-400 hover:bg-slate-800 rounded transition">
+                                <Edit size={16} />
+                              </button>
+                              <button onClick={() => deleteUser(u.id)} className="p-2 text-slate-500 hover:text-red-400 hover:bg-slate-800 rounded transition" disabled={u.username === 'superadmin'}>
+                                <Trash size={16} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             )}
 

@@ -15,6 +15,7 @@ function initDb() {
     if (err) console.error("Error executing schema", err);
     else {
       db.run("ALTER TABLE cameras ADD COLUMN rtsp_url TEXT", (err) => {});
+      db.run("ALTER TABLE users ADD COLUMN permissions TEXT DEFAULT 'all'", (err) => {});
       
       db.get('SELECT * FROM users WHERE username = ?', ['admin'], (err, row) => {
         if (!row) {

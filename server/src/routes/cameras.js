@@ -6,9 +6,24 @@ const router = express.Router();
 router.use(authMiddleware);
 
 router.get('/', (req, res) => {
-  db.all('SELECT * FROM cameras', [], (err, rows) => {
-    if (err) return res.status(500).json({ error: 'Database error' });
-    res.json(rows || []);
+  db.get('SELECT permissions FROM users WHERE id = ?', [req.user.id], (err, user) => {
+    if (err || !user) return res.status(500).json({ error: 'Database error' });
+    
+    db.all('SELECT * FROM cameras', [], (err, rows) => {
+      if (err) return res.status(500).json({ error: 'Database error' });
+      
+      let cameras = rows || [];
+      if (user.permissions && user.permissions !== '"all"' && user.permissions !== 'all') {
+        try {
+          const allowedCamIds = JSON.parse(user.permissions);
+          cameras = cameras.filter(cam => allowedCamIds.includes(cam.id));
+        } catch (e) {
+          // If parse fails, assume no access for safety
+          cameras = [];
+        }
+      }
+      res.json(cameras);
+    });
   });
 });
 
