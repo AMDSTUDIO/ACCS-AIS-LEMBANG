@@ -169,6 +169,6 @@ api:
 webrtc:
   listen: ":8555"
   candidates:
-    - 43.173.8.205:8555
+    - stun:8555
 rtsp:
   listen: ":8554"
