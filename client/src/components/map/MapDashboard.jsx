@@ -383,7 +383,7 @@ export default function MapDashboard() {
 
       {/* 4. ADVANCED FLOATING VIDEO PLAYER MODAL */}
       {activeCam && (
-        <div className="absolute top-24 left-4 right-4 md:left-auto md:right-6 md:w-[400px] glass-panel !border-white/10 !rounded-3xl shadow-2xl overflow-hidden z-20 pointer-events-auto transform transition-all animate-in slide-in-from-right-8 duration-300">
+        <div className="absolute top-24 w-[calc(100vw-2rem)] max-w-sm left-1/2 -translate-x-1/2 md:max-w-none md:translate-x-0 md:left-auto md:right-6 md:w-[400px] glass-panel !border-white/10 !rounded-3xl shadow-2xl overflow-hidden z-20 pointer-events-auto transform transition-all animate-in slide-in-from-right-8 duration-300">
           <div className="p-4 flex flex-col gap-3">
             {/* Header */}
             <div className="flex justify-between items-start">
