@@ -8,7 +8,8 @@ const cameraRoutes = require('./routes/cameras');
 const settingsRoutes = require('./routes/settings');
 const webrtcRoutes = require('./routes/webrtc');
 const usersRoutes = require('./routes/users');
-const { initDb } = require('./db');
+const { initDb, db } = require('./db');
+const { checkRtsp } = require('./utils/cameraCheck');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -18,6 +19,34 @@ app.use(express.json());
 app.use(cookieParser());
 
 initDb();
+
+// Background job to check camera status
+setInterval(() => {
+  db.get('SELECT * FROM settings WHERE key = ?', ['nvr_config'], (err, row) => {
+    let nvr = { ip: '127.0.0.1', user: 'admin', pass: 'admin123', port: 554 };
+    if (row) nvr = JSON.parse(row.value);
+    
+    db.all('SELECT * FROM cameras', async (err, cameras) => {
+      if (err || !cameras) return;
+      
+      for (const cam of cameras) {
+        let rtspUrl = cam.rtsp_url;
+        if (!rtspUrl) {
+          rtspUrl = 
+tsp://:@:/cam/realmonitor?channel=&subtype=1;
+        }
+        
+        const isOnline = await checkRtsp(rtspUrl);
+        const newStatus = isOnline ? 1 : 0;
+        
+        if (cam.is_active !== newStatus) {
+          db.run('UPDATE cameras SET is_active = ? WHERE id = ?', [newStatus, cam.id]);
+        }
+      }
+    });
+  });
+}, 60000); // Check every 60 seconds
+
 
 app.use('/api/auth', authRoutes);
 app.use('/api/cameras', cameraRoutes);

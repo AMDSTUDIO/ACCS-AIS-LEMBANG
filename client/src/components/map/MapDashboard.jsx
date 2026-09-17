@@ -416,9 +416,7 @@ export default function MapDashboard() {
             {/* Video Area */}
             <div id={`vid-container-${activeCam.id}`} className="w-full aspect-video bg-black rounded-xl overflow-hidden relative border border-white/10">
                <WebRtcPlayer cameraId={activeCam.id} streamType="sub" />
-               <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded-full text-[10px] font-bold text-white flex items-center gap-1.5 border border-white/10">
-                 <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div> LIVE
-               </div>
+               
             </div>
 
             {/* Action Buttons */}
