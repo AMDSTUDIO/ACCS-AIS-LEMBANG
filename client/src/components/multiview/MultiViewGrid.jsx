@@ -101,7 +101,7 @@ export default function MultiViewGrid() {
       <div className="w-64 bg-[#0a1220] border-r border-white/10 flex flex-col z-10 shadow-[5px_0_15px_rgba(0,0,0,0.5)]">
         <div className="p-4 border-b border-white/10 bg-[#050B14]">
           <h2 className="text-sm font-bold text-cyan-400 uppercase tracking-widest mb-1">Daftar Kamera</h2>
-          <p className="text-[10px] text-slate-500">Drag & Drop ke slot matriks</p>
+          <p className="text-[10px] text-slate-400">Drag & Drop ke slot matriks</p>
         </div>
         <div className="flex-1 overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-slate-700">
           {cameras.filter(c => c.is_active).map(cam => (
@@ -114,7 +114,7 @@ export default function MultiViewGrid() {
               <Video size={14} className="text-cyan-500 shrink-0" />
               <div className="min-w-0 flex-1">
                 <div className="text-xs font-semibold truncate text-slate-200">{cam.name}</div>
-                <div className="text-[9px] text-slate-500 truncate">{cam.location || 'Area Lainnya'}</div>
+                <div className="text-[9px] text-slate-400 truncate">{cam.location || 'Area Lainnya'}</div>
               </div>
             </div>
           ))}

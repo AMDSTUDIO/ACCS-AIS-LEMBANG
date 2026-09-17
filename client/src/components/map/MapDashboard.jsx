@@ -269,7 +269,7 @@ export default function MapDashboard() {
             <Menu size={20} />
           </button>
 
-          <div className="bg-[#111111]/90 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-white/5 shadow-xl flex items-center gap-4">
+          <div className="glass-panel px-4 py-2.5 rounded-2xl border border-white/5 shadow-xl flex items-center gap-4">
             <div>
               <h1 className="text-white font-extrabold text-sm tracking-widest leading-tight">ACCS <span className="font-light text-slate-400">AIS LEMBANG</span></h1>
               <p className="text-[8px] text-slate-500 font-bold tracking-[0.2em] mt-0.5 uppercase">AREA CCTV CONTROL SYSTEM</p>
@@ -307,8 +307,8 @@ export default function MapDashboard() {
       {isSidebarOpen && <div className="absolute inset-0 bg-black/60 z-[30] md:hidden backdrop-blur-sm pointer-events-auto" onClick={() => setIsSidebarOpen(false)}></div>}
 
       {/* 3. SIDEBAR - DAFTAR KAMERA */}
-      <div className={`absolute top-24 w-72 max-h-[calc(100vh-8rem)] h-fit bg-[#111111]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl z-[40] flex flex-col overflow-hidden transition-all duration-300 pointer-events-auto ${isSidebarOpen ? 'left-4' : '-left-80 md:left-4'}`}>
-        <div className="p-3 border-b border-[#222] shrink-0">
+      <div className={`absolute top-24 w-72 max-h-[calc(100vh-8rem)] h-fit glass-panel rounded-2xl shadow-2xl z-[40] flex flex-col overflow-hidden transition-all duration-300 pointer-events-auto ${isSidebarOpen ? 'left-4' : '-left-80 md:left-4'}`}>
+        <div className="p-3 border-b border-white/10 shrink-0">
           <div className="relative">
             <Search className="absolute left-3 top-2 text-slate-400" size={14} />
             <input 
@@ -316,7 +316,7 @@ export default function MapDashboard() {
               placeholder="Cari lokasi..." 
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-1.5 pl-9 pr-3 text-xs text-white focus:outline-none focus:border-cyan-500/50 focus:bg-black/40 transition placeholder:text-slate-500"
+              className="w-full bg-white/10 border border-white/10 rounded-lg py-1.5 pl-9 pr-3 text-xs text-white focus:outline-none focus:border-cyan-500/50 focus:bg-black/40 transition placeholder:text-slate-500"
             />
           </div>
         </div>
@@ -423,10 +423,10 @@ export default function MapDashboard() {
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-2 mt-1">
-              <button onClick={() => setGroupViewCams([activeCam])} className="w-full glass-button !border-white/5 text-[#8e8eba] py-2.5 rounded-xl text-xs font-bold flex justify-center items-center gap-2 transition">
+              <button onClick={() => setGroupViewCams([activeCam])} className="w-full glass-button !border-white/5 text-slate-300 py-2.5 rounded-xl text-xs font-bold flex justify-center items-center gap-2 transition">
                 <Video size={14} /> LIHAT KAMERA INI
               </button>
-                <button onClick={() => setGroupViewCams(getRelatedCameras(activeCam, 4))} className="w-full glass-button !border-cyan-500/30 !bg-cyan-500/10 hover:!bg-cyan-500/20 text-[#6090d8] py-2.5 rounded-xl text-xs font-bold flex justify-center items-center gap-2 transition">
+                <button onClick={() => setGroupViewCams(getRelatedCameras(activeCam, 4))} className="w-full glass-button !border-cyan-500/30 !bg-cyan-500/10 hover:!bg-cyan-500/20 text-cyan-300 py-2.5 rounded-xl text-xs font-bold flex justify-center items-center gap-2 transition">
                   <Target size={14} /> {(activeCam.location && activeCam.location !== 'Area Lainnya') ? 'OPEN GROUP IN MULTI-VIEW' : 'OPEN WITH NEAREST CAMERAS'}
                 </button>
             </div>
@@ -436,18 +436,18 @@ export default function MapDashboard() {
               <div className="w-2 h-2 bg-[#2db26a] rounded-full shadow-[0_0_5px_#2db26a]"></div> LIVE
             </div>
 
-            <div className="bg-white/5 border border-[#222] p-3 rounded-lg flex flex-col gap-1 mt-1">
+            <div className="bg-white/5 border border-white/10 p-3 rounded-lg flex flex-col gap-1 mt-1">
               <span className="text-[10px] text-slate-500">Nama Kamera</span>
               <span className="text-xs text-slate-200 font-semibold">{activeCam.name}</span>
             </div>
 
             {/* Footer */}
-            <div className="flex justify-between items-end mt-2 pt-3 border-t border-[#222]">
+            <div className="flex justify-between items-end mt-2 pt-3 border-t border-white/10">
               <div className="flex gap-4 text-[10px] text-slate-500 font-mono">
                 <span>LAT: {activeCam.lat?.toFixed(4)}</span>
                 <span>LNG: {activeCam.lng?.toFixed(4)}</span>
               </div>
-              <button onClick={() => setActiveCam(null)} className="bg-[#0d1623] text-[#6090d8] px-3 py-1.5 rounded text-[10px] font-bold flex items-center gap-1 hover:bg-[#131f32] transition border border-[#1e2d44]">
+              <button onClick={() => setActiveCam(null)} className="bg-[#0d1623] text-cyan-300 px-3 py-1.5 rounded text-[10px] font-bold flex items-center gap-1 hover:bg-[#131f32] transition border border-[#1e2d44]">
                 <MapPin size={10}/> MAPS
               </button>
             </div>
