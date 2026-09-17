@@ -316,7 +316,7 @@ export default function MapDashboard() {
               placeholder="Cari lokasi..." 
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full bg-[#1a1a1a] border border-[#333] rounded-lg py-1.5 pl-9 pr-3 text-xs text-white focus:outline-none focus:border-cyan-500/50 focus:bg-black/40 transition placeholder:text-slate-500"
+              className="w-full bg-[#1a1a1a] border border-white/10 rounded-lg py-1.5 pl-9 pr-3 text-xs text-white focus:outline-none focus:border-cyan-500/50 focus:bg-black/40 transition placeholder:text-slate-500"
             />
           </div>
         </div>
@@ -383,7 +383,7 @@ export default function MapDashboard() {
 
       {/* 4. ADVANCED FLOATING VIDEO PLAYER MODAL */}
       {activeCam && (
-        <div className="absolute top-24 right-6 w-[400px] bg-[#111111]/85 backdrop-blur-md rounded-2xl shadow-2xl border border-white/10 overflow-hidden z-20 pointer-events-auto transform transition-all animate-in slide-in-from-right-8 duration-300">
+        <div className="absolute top-24 left-4 right-4 md:left-auto md:right-6 md:w-[400px] glass-panel !border-white/10 !rounded-3xl shadow-2xl overflow-hidden z-20 pointer-events-auto transform transition-all animate-in slide-in-from-right-8 duration-300">
           <div className="p-4 flex flex-col gap-3">
             {/* Header */}
             <div className="flex justify-between items-start">
@@ -404,17 +404,17 @@ export default function MapDashboard() {
                       else document.exitFullscreen();
                     }
                   }} 
-                  className="w-8 h-8 flex justify-center items-center bg-[#1a1a1a] hover:bg-[#2a2a2a] rounded-lg border border-[#333] text-slate-400 transition"
+                  className="w-8 h-8 flex justify-center items-center glass-button !px-2 !py-2 !rounded-xl text-slate-400 transition"
                   title="Fullscreen Camera"
                 >
                   <Maximize2 size={14}/>
                 </button>
-                <button onClick={() => setActiveCam(null)} className="w-8 h-8 flex justify-center items-center bg-[#1a1a1a] hover:bg-[#2a2a2a] hover:text-red-400 rounded-lg border border-[#333] text-slate-400 transition"><X size={14}/></button>
+                <button onClick={() => setActiveCam(null)} className="w-8 h-8 flex justify-center items-center glass-button !px-2 !py-2 hover:!text-red-400 !rounded-xl text-slate-400 transition"><X size={14}/></button>
               </div>
             </div>
 
             {/* Video Area */}
-            <div id={`vid-container-${activeCam.id}`} className="w-full aspect-video bg-black rounded-xl overflow-hidden relative border border-[#333]">
+            <div id={`vid-container-${activeCam.id}`} className="w-full aspect-video bg-black rounded-xl overflow-hidden relative border border-white/10">
                <WebRtcPlayer cameraId={activeCam.id} streamType="sub" />
                <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded-full text-[10px] font-bold text-white flex items-center gap-1.5 border border-white/10">
                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div> LIVE
@@ -423,16 +423,16 @@ export default function MapDashboard() {
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-2 mt-1">
-              <button onClick={() => setGroupViewCams([activeCam])} className="w-full bg-[#161622] hover:bg-[#1e1e2d] border border-[#2d2d44] text-[#8e8eba] py-2.5 rounded-xl text-xs font-bold flex justify-center items-center gap-2 transition">
+              <button onClick={() => setGroupViewCams([activeCam])} className="w-full glass-button !border-white/5 text-[#8e8eba] py-2.5 rounded-xl text-xs font-bold flex justify-center items-center gap-2 transition">
                 <Video size={14} /> LIHAT KAMERA INI
               </button>
-                <button onClick={() => setGroupViewCams(getRelatedCameras(activeCam, 4))} className="w-full bg-[#0d1623] hover:bg-[#131f32] border border-[#1e2d44] text-[#6090d8] py-2.5 rounded-xl text-xs font-bold flex justify-center items-center gap-2 transition">
+                <button onClick={() => setGroupViewCams(getRelatedCameras(activeCam, 4))} className="w-full glass-button !border-cyan-500/30 !bg-cyan-500/10 hover:!bg-cyan-500/20 text-[#6090d8] py-2.5 rounded-xl text-xs font-bold flex justify-center items-center gap-2 transition">
                   <Target size={14} /> {(activeCam.location && activeCam.location !== 'Area Lainnya') ? 'OPEN GROUP IN MULTI-VIEW' : 'OPEN WITH NEAREST CAMERAS'}
                 </button>
             </div>
 
             {/* Status & Location */}
-            <div className="bg-[#0a110d] border border-[#132d1e] text-[#2db26a] px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-2 mt-1">
+            <div className="glass-panel !bg-emerald-500/10 !border-emerald-500/20 !text-emerald-400 px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-2 mt-1">
               <div className="w-2 h-2 bg-[#2db26a] rounded-full shadow-[0_0_5px_#2db26a]"></div> LIVE
             </div>
 
