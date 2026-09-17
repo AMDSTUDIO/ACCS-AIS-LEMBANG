@@ -32,8 +32,7 @@ setInterval(() => {
       for (const cam of cameras) {
         let rtspUrl = cam.rtsp_url;
         if (!rtspUrl) {
-          rtspUrl = 
-tsp://:@:/cam/realmonitor?channel=&subtype=1;
+          rtspUrl = `rtsp://${nvr.user}:${nvr.pass}@${nvr.ip}:${nvr.port}/cam/realmonitor?channel=${cam.channel}&subtype=1`;
         }
         
         const isOnline = await checkRtsp(rtspUrl);
