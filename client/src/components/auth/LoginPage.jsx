@@ -9,12 +9,27 @@ import 'leaflet/dist/leaflet.css';
 import WebRtcPlayer from '../player/WebRtcPlayer';
 
 // Custom icons
-const createIcon = (color) => new L.DivIcon({
-  className: 'custom-div-icon',
-  html: <div style="background-color: ; width: 14px; height: 14px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 10px ;"></div>,
-  iconSize: [14, 14],
-  iconAnchor: [7, 7]
-});
+const createIcon = (color, isActive = false) => {
+  const scale = 1;
+  const baseSize = 48 * scale;
+  const innerSize = 24 * scale; 
+  const iconSize = 14 * scale;
+
+  return L.divIcon({
+    className: 'bg-transparent border-0',
+    html: `
+      <div class="relative flex items-center justify-center group cursor-pointer transition-transform duration-300 hover:scale-110" style="width:${baseSize}px; height:${baseSize}px;">
+        ${isActive ? `<span class="absolute inline-flex rounded-full opacity-40 animate-ping" style="background-color: ${color}; width:${baseSize*1.2}px; height:${baseSize*1.2}px;"></span>` : ''}
+        <div class="relative z-10 rounded-full border-2 flex items-center justify-center backdrop-blur-md drop-shadow-lg" 
+             style="width:${innerSize}px; height:${innerSize}px; border-color: ${color}; background-color: ${color}40; ${isActive ? `box-shadow: 0 0 10px ${color};` : ''}">
+          <img src="https://unpkg.com/lucide-static@0.321.0/icons/cctv.svg" class="filter invert brightness-0 sepia-0 hue-rotate-180" style="width:${iconSize}px; height:${iconSize}px; ${isActive ? `filter: drop-shadow(0 0 8px ${color});` : ''}" />
+        </div>
+      </div>
+    `,
+    iconSize: [baseSize, baseSize],
+    iconAnchor: [baseSize / 2, baseSize / 2],
+  });
+};
 
 const getLocationColor = (loc) => {
   if (!loc) return { bg: 'bg-slate-500', border: 'border-slate-400', text: 'text-slate-400', hex: '#64748b' };
@@ -141,8 +156,8 @@ export default function LoginPage() {
         </div>
 
         {/* Right Side: Login Card Container */}
-        <div className="w-full lg:w-[450px] p-4 lg:p-8 flex items-center justify-center shrink-0 bg-black/40 relative z-20 ml-auto border-l border-white/10">
-          <div className="w-full max-w-[320px] p-8 bg-black/30 rounded-[2.5rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10">
+        <div className="w-full lg:w-[450px] p-4 lg:p-8 flex items-center justify-center shrink-0 bg-black/20 backdrop-blur-md relative z-20 ml-auto border-l border-white/10">
+          <div className="w-full max-w-[320px] p-8 glass-panel !bg-[#050B14]/60 !backdrop-blur-3xl rounded-[2.5rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10">
             <div className="flex flex-col items-center mb-8 text-center">
               <div className="mb-5 flex justify-center">
                 <img src="/ais-logo.png" alt="AIS Logo" className="w-16 h-16 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.15)]" />
