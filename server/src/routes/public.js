@@ -30,16 +30,15 @@ router.post('/webrtc', (req, res) => {
       const subtype = streamType === 'sub' ? 1 : 0;
       let rtspUrl = cam.rtsp_url;
       if (!rtspUrl) {
-        rtspUrl = 
-tsp://:@:/cam/realmonitor?channel=&subtype=;
+        rtspUrl = `rtsp://${nvr.user}:${nvr.pass}@${nvr.ip}:${nvr.port}/cam/realmonitor?channel=${cam.channel}&subtype=${subtype}`;
       }
       
       try {
-        const streamName = cam__;
-        const addStreamUrl = http://127.0.0.1:1984/api/streams?name=&src=;
+        const streamName = `cam_${cam.id}_${streamType}`;
+        const addStreamUrl = `http://127.0.0.1:1984/api/streams?name=${streamName}&src=${encodeURIComponent(rtspUrl)}`;
         await axios.put(addStreamUrl);
 
-        const go2rtcUrl = http://127.0.0.1:1984/api/webrtc?src=;
+        const go2rtcUrl = `http://127.0.0.1:1984/api/webrtc?src=${streamName}`;
         const response = await axios.post(go2rtcUrl, sdp, {
           headers: { 'Content-Type': 'application/sdp' }
         });
