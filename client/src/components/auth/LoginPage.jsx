@@ -83,16 +83,16 @@ export default function LoginPage() {
               center={[mapConfig.lat, mapConfig.lng]} 
               zoom={mapConfig.zoom} 
               className="w-full h-full z-0"
-              zoomControl={false}
+              maxZoom={22} zoomControl={false}
             >
-              <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" maxZoom={20} />
+              <TileLayer url="https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}" maxZoom={22} />
               <ZoomControl position="bottomright" />
               
               {publicCameras.map(cam => (
                 <Marker 
                   key={cam.id} 
                   position={[cam.lat || mapConfig.lat, cam.lng || mapConfig.lng]}
-                  icon={createIcon(getLocationColor(cam.location).hex)}
+                  icon={createIcon(getLocationColor(cam.location).hex, activeCam?.id === cam.id)}
                   eventHandlers={{ click: () => setActiveCam(cam) }}
                 >
                 </Marker>
