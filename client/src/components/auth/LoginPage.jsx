@@ -83,7 +83,7 @@ export default function LoginPage() {
               center={[mapConfig.lat, mapConfig.lng]} 
               zoom={mapConfig.zoom} 
               className="w-full h-full z-0"
-              maxZoom={22} zoomControl={false}
+              maxZoom={22} zoomControl={false} dragging={false} scrollWheelZoom={false} doubleClickZoom={false} touchZoom={false}
             >
               <TileLayer url="https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}" maxZoom={22} />
               <ZoomControl position="bottomright" />
@@ -141,8 +141,8 @@ export default function LoginPage() {
         </div>
 
         {/* Right Side: Login Card Container */}
-        <div className="w-full lg:w-[450px] p-4 lg:p-8 flex items-center justify-center shrink-0 bg-[#050B14]/50 backdrop-blur-xl relative z-20 shadow-[-20px_0_50px_rgba(0,0,0,0.5)] ml-auto border-l border-white/10">
-          <div className="w-full max-w-[320px] p-8 glass-panel rounded-[2.5rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10">
+        <div className="w-full lg:w-[450px] p-4 lg:p-8 flex items-center justify-center shrink-0 bg-black/40 relative z-20 ml-auto border-l border-white/10">
+          <div className="w-full max-w-[320px] p-8 bg-black/30 rounded-[2.5rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10">
             <div className="flex flex-col items-center mb-8 text-center">
               <div className="mb-5 flex justify-center">
                 <img src="/ais-logo.png" alt="AIS Logo" className="w-16 h-16 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.15)]" />
