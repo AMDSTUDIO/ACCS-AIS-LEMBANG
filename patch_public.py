@@ -1,4 +1,4 @@
-const express = require('express');
+content = r'''const express = require('express');
 const { db } = require('../db');
 const axios = require('axios');
 const router = express.Router();
@@ -30,8 +30,7 @@ router.post('/webrtc', (req, res) => {
       const subtype = streamType === 'sub' ? 1 : 0;
       let rtspUrl = cam.rtsp_url;
       if (!rtspUrl) {
-        rtspUrl = 
-tsp://:@:/cam/realmonitor?channel=&subtype=;
+        rtspUrl = tsp://:@:/cam/realmonitor?channel=&subtype=;
       }
       
       try {
@@ -57,3 +56,6 @@ tsp://:@:/cam/realmonitor?channel=&subtype=;
 });
 
 module.exports = router;
+'''
+with open('server/src/routes/public.js', 'w', encoding='utf-8') as f:
+    f.write(content)

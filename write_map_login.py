@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+content = '''import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore';
 import { ShieldAlert, KeyRound, User, Loader2, MapPin, X, Maximize2, Video } from 'lucide-react';
@@ -115,7 +115,7 @@ export default function LoginPage() {
                 <div className="flex justify-between items-start">
                   <div>
                     <div className="flex items-center gap-2">
-                      <div className={`w-3 h-3 rounded-full ${getLocationColor(activeCam.location).bg} border ${getLocationColor(activeCam.location).border}`}></div>
+                      <div className={w-3 h-3 rounded-full  border }></div>
                       <h2 className="font-extrabold text-white text-lg leading-tight uppercase tracking-wide truncate w-56">{activeCam.location || 'Area Publik'}</h2>
                     </div>
                   </div>
@@ -127,7 +127,7 @@ export default function LoginPage() {
                 <div className="w-full aspect-video bg-black rounded-xl overflow-hidden relative border border-white/10">
                   <WebRtcPlayer cameraId={activeCam.id} streamType="sub" publicMode={true} />
                    <div className="absolute top-2 right-2 glass-panel !bg-black/60 px-2 py-1 rounded-full text-[10px] font-bold text-white flex items-center gap-1.5 !border-white/10">
-                     <div className={`w-2 h-2 rounded-full shadow-[0_0_5px_currentColor] ${!activeCam.is_active ? "bg-red-500 text-red-500" : "bg-green-500 text-green-500 animate-pulse"}`}></div> 
+                     <div className={w-2 h-2 rounded-full shadow-[0_0_5px_currentColor] }></div> 
                      {!activeCam.is_active ? 'OFFLINE' : 'LIVE'}
                    </div>
                 </div>
@@ -209,3 +209,6 @@ export default function LoginPage() {
     </div>
   );
 }
+'''
+with open('client/src/components/auth/LoginPage.jsx', 'w', encoding='utf-8') as f:
+    f.write(content)
