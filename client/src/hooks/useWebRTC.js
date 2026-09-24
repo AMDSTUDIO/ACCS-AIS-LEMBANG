@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import axios from 'axios';
 
-export function useWebRTC(cameraId, streamType = 'sub') {
+export function useWebRTC(cameraId, streamType = 'sub', publicMode = false) {
   const videoRef = useRef(null);
   const pcRef = useRef(null);
 
@@ -25,7 +25,7 @@ export function useWebRTC(cameraId, streamType = 'sub') {
     pc.createOffer().then(offer => {
       pc.setLocalDescription(offer);
       
-      axios.post('/api/webrtc', {
+      axios.post(publicMode ? '/api/public/webrtc' : '/api/webrtc', {
         cameraId,
         streamType,
         type: offer.type,

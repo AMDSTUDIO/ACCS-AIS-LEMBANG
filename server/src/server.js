@@ -8,6 +8,8 @@ const cameraRoutes = require('./routes/cameras');
 const settingsRoutes = require('./routes/settings');
 const webrtcRoutes = require('./routes/webrtc');
 const usersRoutes = require('./routes/users');
+const publicRoutes = require('./routes/public');
+const publicRoutes = require('./routes/public');
 const { initDb, db } = require('./db');
 const { checkRtsp } = require('./utils/cameraCheck');
 
@@ -52,6 +54,8 @@ app.use('/api/cameras', cameraRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/webrtc', webrtcRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/public', publicRoutes);
+app.use('/api/public', publicRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

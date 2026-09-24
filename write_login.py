@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+content = '''import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore';
 import { ShieldAlert, KeyRound, User, Loader2 } from 'lucide-react';
@@ -145,3 +145,6 @@ export default function LoginPage() {
     </div>
   );
 }
+'''
+with open('client/src/components/auth/LoginPage.jsx', 'w', encoding='utf-8') as f:
+    f.write(content)
