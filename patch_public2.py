@@ -1,10 +1,10 @@
-const express = require('express');
+content = r'''const express = require('express');
 const { db } = require('../db');
 const axios = require('axios');
 const router = express.Router();
 
 router.get('/cameras', (req, res) => {
-  db.all('SELECT * FROM cameras WHERE is_public = 1', (err, rows) => {
+  db.all('SELECT * FROM cameras WHERE location LIKE "%PUBLIC%" OR location LIKE "%KOMERSIAL%"', (err, rows) => {
     if (err) return res.status(500).json({ error: 'DB error' });
     res.json(rows);
   });
@@ -20,7 +20,7 @@ router.get('/map-settings', (req, res) => {
 router.post('/webrtc', (req, res) => {
   const { cameraId, streamType, type, sdp } = req.body;
   
-  db.get('SELECT * FROM cameras WHERE id = ? AND is_public = 1', [cameraId], (err, cam) => {
+  db.get('SELECT * FROM cameras WHERE id = ? AND (location LIKE "%PUBLIC%" OR location LIKE "%KOMERSIAL%")', [cameraId], (err, cam) => {
     if (err || !cam) return res.status(403).json({ error: 'Camera not found or not public' });
     
     db.get('SELECT * FROM settings WHERE key = ?', ['nvr_config'], async (err, row) => {
@@ -56,3 +56,6 @@ router.post('/webrtc', (req, res) => {
 });
 
 module.exports = router;
+'''
+with open('server/src/routes/public.js', 'w', encoding='utf-8') as f:
+    f.write(content)

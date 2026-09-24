@@ -31,7 +31,7 @@ export default function SettingsModal({ onClose }) {
   const [nvrConfig, setNvrConfig] = useState({ host: '', user: '', password: '', port: 554 });
   const [mapConfig, setMapConfig] = useState({ lat: -6.808722, lng: 107.649002, zoom: 19 });
   
-  const [newCam, setNewCam] = useState({ id: null, name: '', location: '', channel: 1, lat: -6.808722, lng: 107.649002, rtsp_url: '' });
+  const [newCam, setNewCam] = useState({ id: null, name: '', location: '', channel: 1, lat: -6.808722, lng: 107.649002, rtsp_url: '', is_public: 0 });
   const [batchConfig, setBatchConfig] = useState({ prefix: 'CAM-', start: 1, end: 16 });
   const [cameraMode, setCameraMode] = useState('single');
   const [usersList, setUsersList] = useState([]);
@@ -113,7 +113,7 @@ export default function SettingsModal({ onClose }) {
         await axios.post('/api/cameras', newCam);
       }
       
-      setNewCam({ id: null, name: '', location: '', channel: 1, lat: mapConfig.lat || -6.808722, lng: mapConfig.lng || 107.649002, rtsp_url: '' });
+      setNewCam({ id: null, name: '', location: '', channel: 1, lat: mapConfig.lat || -6.808722, lng: mapConfig.lng || 107.649002, rtsp_url: '', is_public: 0 });
       fetchData();
     } catch (err) {
       console.error(err);
@@ -503,7 +503,7 @@ export default function SettingsModal({ onClose }) {
                         {newCam.id ? <><Save size={18}/> Simpan Perubahan</> : <><Plus size={18}/> Simpan Kamera</>}
                       </button>
                       {newCam.id && (
-                        <button type="button" onClick={() => setNewCam({ id: null, name: '', location: '', channel: 1, lat: mapConfig.lat || -6.808722, lng: mapConfig.lng || 107.649002, rtsp_url: '' })} className="bg-slate-700 hover:bg-slate-600 text-white px-6 py-3 rounded-xl font-bold transition">
+                        <button type="button" onClick={() => setNewCam({ id: null, name: '', location: '', channel: 1, lat: mapConfig.lat || -6.808722, lng: mapConfig.lng || 107.649002, rtsp_url: '', is_public: 0 })} className="bg-slate-700 hover:bg-slate-600 text-white px-6 py-3 rounded-xl font-bold transition">
                           Batal
                         </button>
                       )}

@@ -29,10 +29,10 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
   if (req.user.role !== 'superadmin') return res.status(403).json({ error: 'Forbidden' });
-  const { name, location, channel, lat, lng, rtsp_url } = req.body;
+  const { name, location, channel, lat, lng, rtsp_url, is_public } = req.body;
   const loc = location !== undefined ? location : '';
-  db.run('INSERT INTO cameras (name, location, channel, lat, lng, rtsp_url) VALUES (?, ?, ?, ?, ?, ?)', 
-    [name, loc, channel || 1, lat, lng, rtsp_url || ''], function(err) {
+  db.run('INSERT INTO cameras (name, location, channel, lat, lng, rtsp_url, is_public) VALUES (?, ?, ?, ?, ?, ?, ?)', 
+    [name, loc, channel || 1, lat, lng, rtsp_url || '', is_public ? 1 : 0], function(err) {
     if (err) return res.status(500).json({ error: 'Database error' });
     res.json({ id: this.lastID });
   });
@@ -40,12 +40,12 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   if (req.user.role !== 'superadmin') return res.status(403).json({ error: 'Forbidden' });
-  const { name, location, channel, lat, lng, is_active, rtsp_url } = req.body;
+  const { name, location, channel, lat, lng, is_active, rtsp_url, is_public } = req.body;
   const active = is_active !== undefined ? is_active : 1;
   const loc = location !== undefined ? location : '';
   const rtsp = rtsp_url !== undefined ? rtsp_url : '';
-  db.run('UPDATE cameras SET name=?, location=?, channel=?, lat=?, lng=?, is_active=?, rtsp_url=? WHERE id=?', 
-    [name, loc, channel, lat, lng, active, rtsp, req.params.id], function(err) {
+  db.run('UPDATE cameras SET name=?, location=?, channel=?, lat=?, lng=?, is_active=?, rtsp_url=?, is_public=? WHERE id=?', 
+    [name, loc, channel, lat, lng, active, rtsp, is_public ? 1 : 0, req.params.id], function(err) {
     if (err) return res.status(500).json({ error: 'Database error' });
     res.json({ success: true });
   });
