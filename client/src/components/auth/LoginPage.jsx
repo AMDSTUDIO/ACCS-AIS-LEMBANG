@@ -74,10 +74,10 @@ export default function LoginPage() {
         <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-cyan-400/5 rounded-full blur-[120px]"></div>
       </div>
 
-      <div className="relative z-10 w-full flex flex-col lg:flex-row items-stretch justify-center h-screen">
+      <div className="relative z-10 w-full h-screen overflow-hidden flex">
         
         {/* Left Side: Public Map */}
-        <div className="w-full lg:flex-1 hidden md:flex flex-col relative border-r border-white/5">
+        <div className="absolute inset-0 w-full h-full z-0 hidden md:flex">
           {mapConfig && (
             <MapContainer 
               center={[mapConfig.lat, mapConfig.lng]} 
@@ -94,8 +94,7 @@ export default function LoginPage() {
                   position={[cam.lat || mapConfig.lat, cam.lng || mapConfig.lng]}
                   icon={createIcon(getLocationColor(cam.location).hex, activeCam?.id === cam.id)}
                   eventHandlers={{ click: () => setActiveCam(cam) }}
-                >
-                </Marker>
+                />
               ))}
             </MapContainer>
           )}
@@ -142,7 +141,7 @@ export default function LoginPage() {
         </div>
 
         {/* Right Side: Login Card Container */}
-        <div className="w-full lg:w-[450px] p-4 lg:p-8 flex items-center justify-center shrink-0 bg-[#050B14] relative z-20 shadow-[-20px_0_50px_rgba(0,0,0,0.5)]">
+        <div className="w-full lg:w-[450px] p-4 lg:p-8 flex items-center justify-center shrink-0 bg-[#050B14]/50 backdrop-blur-xl relative z-20 shadow-[-20px_0_50px_rgba(0,0,0,0.5)] ml-auto border-l border-white/10">
           <div className="w-full max-w-[320px] p-8 glass-panel rounded-[2.5rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10">
             <div className="flex flex-col items-center mb-8 text-center">
               <div className="mb-5 flex justify-center">

@@ -25,7 +25,7 @@ function CctvMarkers({ cameras, activeCam, setActiveCam, groupColors = {} }) {
     const innerSize = 24 * scale; 
     const iconSize = 14 * scale;
 
-    return new L.divIcon({
+    return L.divIcon({
       className: 'bg-transparent border-0',
       html: `
         <div class="relative flex items-center justify-center group cursor-pointer transition-transform duration-300 hover:scale-110" style="width:${baseSize}px; height:${baseSize}px;">
