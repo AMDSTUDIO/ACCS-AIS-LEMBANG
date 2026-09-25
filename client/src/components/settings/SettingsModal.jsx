@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useCctvStore } from '../../store/useCctvStore';
+import { useAuthStore } from '../../store/useAuthStore';
 import { X, Save, Plus, Trash, Server, MapIcon, Video, Crosshair, MapPin, Edit, Users, UserPlus } from 'lucide-react';
 import { MapContainer, TileLayer, useMapEvents, useMap } from 'react-leaflet';
 
@@ -26,8 +27,10 @@ function MapCenterUpdater({ lat, lng }) {
 }
 
 export default function SettingsModal({ onClose }) {
-  const [activeTab, setActiveTab] = useState('cctv'); // cctv, nvr, map
+  const [activeTab, setActiveTab] = useState('cctv');
+  const [runningText, setRunningText] = useState('SELAMAT DATANG DI SISTEM PEMANTAUAN CCTV AREA ACCS AIS LEMBANG'); // cctv, nvr, map
   const { cameras, setCameras } = useCctvStore();
+  const user = useAuthStore(state => state.user);
   const [nvrConfig, setNvrConfig] = useState({ host: '', user: '', password: '', port: 554 });
   const [mapConfig, setMapConfig] = useState({ lat: -6.808722, lng: 107.649002, zoom: 19 });
   
@@ -57,6 +60,7 @@ export default function SettingsModal({ onClose }) {
     }
     
     if (sets.data.nvr_config) setNvrConfig(sets.data.nvr_config);
+    if (sets.data.running_text) setRunningText(sets.data.running_text);
     setUsersList(usersData.data || []);
 
   };
@@ -209,6 +213,13 @@ export default function SettingsModal({ onClose }) {
             <Users size={18} />
             Manajemen User
           </button>
+
+          {user?.role === 'superadmin' && (
+            <button onClick={() => setActiveTab('public_display')} className={`flex items-center gap-3 p-3 rounded-xl transition font-medium ${activeTab === 'public_display' ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.3)]' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}`}>
+              <MapPin size={18} />
+              Tampilan Publik
+            </button>
+          )}
         </div>
 
         {/* CONTENT AREA */}

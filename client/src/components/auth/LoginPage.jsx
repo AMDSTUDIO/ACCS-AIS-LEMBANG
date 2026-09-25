@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore';
-import { ShieldAlert, KeyRound, User, Loader2, MapPin, X, Maximize2, Video } from 'lucide-react';
+import { ShieldAlert, KeyRound, User, Loader2, MapPin, X, Maximize2, Video, Globe, MessageCircle, MonitorPlay, Share2 } from 'lucide-react';
 import axios from 'axios';
 import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from 'react-leaflet';
 import L from 'leaflet';
@@ -49,6 +49,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [publicCameras, setPublicCameras] = useState([]);
+  const [runningText, setRunningText] = useState("SELAMAT DATANG DI SISTEM PEMANTAUAN CCTV AREA ACCS AIS LEMBANG");
   const [mapConfig, setMapConfig] = useState(null);
   const [activeCam, setActiveCam] = useState(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -241,6 +242,30 @@ export default function LoginPage() {
           </div>
         </div>
       )}
+
+
+      {/* Footer with Running Text & Social Media */}
+      <div className="absolute bottom-0 left-0 right-0 z-40 bg-black/60 backdrop-blur-md border-t border-white/10 flex items-center">
+        {/* Running Text */}
+        <div className="flex-1 overflow-hidden flex items-center h-10 border-r border-white/10">
+          <div className="bg-blue-600 h-full px-4 flex items-center justify-center whitespace-nowrap shrink-0 z-10 relative shadow-[5px_0_15px_rgba(0,0,0,0.5)]">
+            <span className="text-white text-xs font-bold uppercase tracking-wider">INFORMASI</span>
+          </div>
+          <div className="flex-1 overflow-hidden relative h-full flex items-center">
+            <div className="animate-marquee whitespace-nowrap text-cyan-400 font-bold text-sm tracking-widest px-4">
+              {runningText}
+            </div>
+          </div>
+        </div>
+        
+        {/* Social Media */}
+        <div className="flex items-center gap-4 px-6 h-10">
+          <a href="#" className="text-slate-400 hover:text-blue-500 transition"><MessageCircle size={16} /></a>
+          <a href="#" className="text-slate-400 hover:text-pink-500 transition"><Share2 size={16} /></a>
+          <a href="#" className="text-slate-400 hover:text-red-500 transition"><MonitorPlay size={16} /></a>
+          <a href="#" className="text-slate-400 hover:text-blue-400 transition"><Globe size={16} /></a>
+        </div>
+      </div>
 
     </div>
   );
