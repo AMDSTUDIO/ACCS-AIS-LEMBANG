@@ -51,6 +51,7 @@ export default function LoginPage() {
   const [publicCameras, setPublicCameras] = useState([]);
   const [mapConfig, setMapConfig] = useState(null);
   const [activeCam, setActiveCam] = useState(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   
   const login = useAuthStore(state => state.login);
   const navigate = useNavigate();
@@ -116,9 +117,10 @@ export default function LoginPage() {
 
           {/* Map Overlay Header */}
           <div className="absolute top-8 left-8 z-10 pointer-events-none">
-            <div className="glass-panel px-6 py-4 rounded-2xl pointer-events-auto shadow-2xl">
-              <h1 className="text-3xl font-black text-white tracking-tight drop-shadow-md">PUBLIC LIVE MAP</h1>
-              <p className="text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase mt-1">Sistem Pemantauan Publik</p>
+            <div className="glass-panel px-6 py-4 rounded-2xl pointer-events-auto shadow-2xl flex items-center gap-4">
+              <h1 className="text-3xl font-black text-white tracking-tight drop-shadow-md">ACCS <span className="font-light text-slate-300">AIS LEMBANG</span></h1>
+              <div className="w-[1px] h-10 bg-white/20 hidden md:block"></div>
+              <p className="text-cyan-400 text-[10px] font-bold tracking-[0.2em] uppercase max-w-[120px] leading-snug">AREA CCTV CONTROL SYSTEM</p>
             </div>
           </div>
           
@@ -134,7 +136,8 @@ export default function LoginPage() {
                     </div>
                   </div>
                   <div className="flex gap-1.5">
-                    <button onClick={() => setActiveCam(null)} className="w-8 h-8 flex justify-center items-center glass-button !px-0 !py-0 hover:!text-red-400 !rounded-xl transition"><X size={14}/></button>
+                    <button onClick={() => setIsFullscreen(true)} className="w-8 h-8 flex justify-center items-center glass-button !px-0 !py-0 hover:!text-white !rounded-xl transition"><Maximize2 size={14}/></button>
+                      <button onClick={() => { setActiveCam(null); setIsFullscreen(false); }} className="w-8 h-8 flex justify-center items-center glass-button !px-0 !py-0 hover:!text-red-400 !rounded-xl transition"><X size={14}/></button>
                   </div>
                 </div>
 
@@ -162,8 +165,8 @@ export default function LoginPage() {
               <div className="mb-5 flex justify-center">
                 <img src="/ais-logo.png" alt="AIS Logo" className="w-16 h-16 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.15)]" />
               </div>
-              <h2 className="text-2xl font-black text-white tracking-tight leading-tight">ACCS <span className="font-light text-cyan-100">AIS</span></h2>
-              <p className="text-[10px] uppercase tracking-[0.4em] text-cyan-400 mt-2 font-bold opacity-90">Area CCTV Control</p>
+              <h2 className="text-2xl font-black text-white tracking-tight leading-tight">ACCS <span className="font-light text-cyan-100">AIS LEMBANG</span></h2>
+              <p className="text-[10px] uppercase tracking-[0.4em] text-cyan-400 mt-2 font-bold opacity-90">AREA CCTV CONTROL SYSTEM</p>
             </div>
             
             {error && (
@@ -220,6 +223,25 @@ export default function LoginPage() {
         </div>
 
       </div>
+
+      {/* Fullscreen Player Overlay */}
+      {isFullscreen && activeCam && (
+        <div className="fixed inset-0 z-[9999] bg-black flex flex-col">
+          <div className="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/80 to-transparent z-10 flex justify-between items-center pointer-events-none">
+            <div className="flex items-center gap-3">
+              <div className={`w-3 h-3 rounded-full ${getLocationColor(activeCam.location).bg} animate-pulse`}></div>
+              <h2 className="font-extrabold text-white text-xl uppercase drop-shadow-md">{activeCam.location || 'Area Publik'}</h2>
+            </div>
+            <button onClick={() => setIsFullscreen(false)} className="w-10 h-10 flex justify-center items-center bg-white/10 hover:bg-red-500/80 backdrop-blur-md rounded-xl text-white pointer-events-auto transition">
+              <X size={20} />
+            </button>
+          </div>
+          <div className="flex-1 w-full h-full relative">
+            <WebRtcPlayer cameraId={activeCam.id} streamType="sub" publicMode={true} />
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

@@ -7,13 +7,15 @@ export default function WebRtcPlayer({ cameraId, streamType = 'sub', className =
   return (
     <video
       ref={videoRef}
-      className={`w-full h-full object-contain bg-black ${className}`}
+      className={`w-full h-full object-contain bg-black cursor-pointer ${className}`}
       autoPlay
       muted
       playsInline
       controls={false}
-      onDoubleClick={() => {
-        if (document.fullscreenElement) {
+      onClick={(e) => {
+        if (!document.fullscreenElement) {
+          e.target.requestFullscreen().catch(err => console.log(err));
+        } else {
           document.exitFullscreen().catch(err => console.log(err));
         }
       }}
