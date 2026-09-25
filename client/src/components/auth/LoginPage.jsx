@@ -49,7 +49,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [publicCameras, setPublicCameras] = useState([]);
-  const [runningText, setRunningText] = useState("SELAMAT DATANG DI SISTEM PEMANTAUAN CCTV AREA ACCS AIS LEMBANG");
+  const [runningText, setRunningText] = useState({ text: "SELAMAT DATANG DI SISTEM PEMANTAUAN CCTV AREA ACCS AIS LEMBANG", speed: 25, logoUrl: "" });
   const [mapConfig, setMapConfig] = useState(null);
   const [activeCam, setActiveCam] = useState(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -252,8 +252,9 @@ export default function LoginPage() {
             <span className="text-white text-xs font-bold uppercase tracking-wider">INFORMASI</span>
           </div>
           <div className="flex-1 overflow-hidden relative h-full flex items-center">
-            <div className="animate-marquee whitespace-nowrap text-cyan-400 font-bold text-sm tracking-widest px-4">
-              {runningText}
+            <div className="animate-marquee whitespace-nowrap text-cyan-400 font-bold text-sm tracking-widest px-4 flex items-center gap-4" style={{ animationDuration: `${runningText.speed || 25}s` }}>
+              {runningText.logoUrl && <img src={runningText.logoUrl} alt="Logo" className="h-6 object-contain" />}
+              <span>{runningText.text}</span>
             </div>
           </div>
         </div>

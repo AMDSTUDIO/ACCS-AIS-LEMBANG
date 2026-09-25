@@ -14,7 +14,18 @@ router.get('/cameras', (req, res) => {
 router.get('/running-text', (req, res) => {
   db.get('SELECT value FROM settings WHERE key = ?', ['running_text'], (err, row) => {
     if (err) return res.status(500).json({ error: 'DB error' });
-    res.json({ text: row ? JSON.parse(row.value) : 'SELAMAT DATANG DI SISTEM PEMANTAUAN CCTV AREA ACCS AIS LEMBANG' });
+    if (row) {
+      try {
+        let parsed = JSON.parse(row.value);
+        if (typeof parsed === 'string') {
+          parsed = { text: parsed, speed: 25, logoUrl: '' };
+        }
+        return res.json(parsed);
+      } catch(e) {
+        return res.json({ text: row.value, speed: 25, logoUrl: '' });
+      }
+    }
+    res.json({ text: 'SELAMAT DATANG DI SISTEM PEMANTAUAN CCTV AREA ACCS AIS LEMBANG', speed: 25, logoUrl: '' });
   });
 });
 
