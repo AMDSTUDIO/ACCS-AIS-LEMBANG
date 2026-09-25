@@ -235,6 +235,31 @@ export default function SettingsModal({ onClose }) {
 
           <div id="settings-scroll-area" className="flex-1 overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-slate-700">
             
+            {/* PUBLIC DISPLAY TAB */}
+            {activeTab === 'public_display' && user?.role === 'superadmin' && (
+              <div className="max-w-2xl">
+                <div className="bg-blue-900/20 border border-blue-500/30 rounded-xl p-4 mb-6">
+                  <h3 className="text-blue-400 font-bold mb-1">Pengaturan Tampilan Halaman Login</h3>
+                  <p className="text-sm text-slate-300 mb-4">Edit teks berjalan (Running Text) yang akan ditampilkan di bawah halaman login.</p>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-xs text-slate-400 mb-1">Running Text</label>
+                      <textarea 
+                        value={runningText} 
+                        onChange={e => setRunningText(e.target.value)} 
+                        className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 outline-none h-24" 
+                        placeholder="Masukkan teks berjalan..."></textarea>
+                    </div>
+                    
+                    <button onClick={() => saveConfig('running_text', runningText)} className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-medium transition flex justify-center items-center gap-2 shadow-lg shadow-blue-600/20">
+                      <Save size={18} /> Simpan Tampilan
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* MAP CONFIG TAB */}
             {activeTab === 'map' && (
               <div className="max-w-2xl">
