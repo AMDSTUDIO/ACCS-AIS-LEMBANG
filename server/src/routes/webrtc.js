@@ -24,10 +24,10 @@ router.post('/', (req, res) => {
       
       try {
         const streamName = `cam_${cam.id}_${streamType}`;
-        const addStreamUrl = `http://127.0.0.1:1984/api/streams?name=${streamName}&src=${encodeURIComponent(rtspUrl)}`;
+        const addStreamUrl = `http://43.173.8.205:1984/api/streams?name=${streamName}&src=${encodeURIComponent(rtspUrl)}`;
         await axios.put(addStreamUrl);
 
-        const go2rtcUrl = `http://127.0.0.1:1984/api/webrtc?src=${streamName}`;
+        const go2rtcUrl = `http://43.173.8.205:1984/api/webrtc?src=${streamName}`;
         const response = await axios.post(go2rtcUrl, sdp, {
           headers: { 'Content-Type': 'application/sdp' }
         });
