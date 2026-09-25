@@ -28,7 +28,8 @@ function MapCenterUpdater({ lat, lng }) {
 
 export default function SettingsModal({ onClose }) {
   const [activeTab, setActiveTab] = useState('cctv');
-  const [runningText, setRunningText] = useState({ text: 'SELAMAT DATANG DI SISTEM PEMANTAUAN CCTV AREA ACCS AIS LEMBANG', speed: 25, logoUrl: '' }); // cctv, nvr, map
+  const defaultPublicConfig = { text: 'SELAMAT DATANG DI SISTEM PEMANTAUAN CCTV AREA ACCS AIS LEMBANG', speed: 25, logoUrl: '', social: { website: '', whatsapp: '', instagram: '', youtube: '' } };
+  const [runningText, setRunningText] = useState(defaultPublicConfig); // cctv, nvr, map
   const { cameras, setCameras } = useCctvStore();
   const user = useAuthStore(state => state.user);
   const [nvrConfig, setNvrConfig] = useState({ host: '', user: '', password: '', port: 554 });
@@ -63,9 +64,9 @@ export default function SettingsModal({ onClose }) {
     
     if (sets.data.running_text) {
       if (typeof sets.data.running_text === 'string') {
-        setRunningText({ text: sets.data.running_text, speed: 25, logoUrl: '' });
+        setRunningText({ ...defaultPublicConfig, text: sets.data.running_text });
       } else {
-        setRunningText(sets.data.running_text);
+        setRunningText({ ...defaultPublicConfig, ...sets.data.running_text, social: { ...defaultPublicConfig.social, ...(sets.data.running_text.social || {}) } });
       }
     }
 
@@ -262,23 +263,40 @@ export default function SettingsModal({ onClose }) {
                     <div className="flex gap-4">
                       <div className="flex-1">
                         <label className="block text-xs text-slate-400 mb-1">Durasi Kecepatan (Detik)</label>
-                        <input 
-                          type="number" 
-                          value={runningText.speed} 
-                          onChange={e => setRunningText({...runningText, speed: Number(e.target.value)})} 
-                          className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-blue-500 outline-none" 
-                          placeholder="25 (makin kecil makin cepat)" />
-                        <p className="text-[10px] text-slate-500 mt-1">Makin kecil angkanya, makin cepat berjalannya (Default: 25).</p>
+                        <input type="number" value={runningText.speed} onChange={e => setRunningText({...runningText, speed: Number(e.target.value)})} className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-blue-500 outline-none" placeholder="25" />
+                        <p className="text-[10px] text-slate-500 mt-1">Makin kecil = makin cepat (Default: 25)</p>
                       </div>
                       <div className="flex-1">
-                        <label className="block text-xs text-slate-400 mb-1">URL Logo Tambahan (Opsional)</label>
-                        <input 
-                          type="text" 
-                          value={runningText.logoUrl} 
-                          onChange={e => setRunningText({...runningText, logoUrl: e.target.value})} 
-                          className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:border-blue-500 outline-none" 
-                          placeholder="https://.../logo.png" />
+                        <label className="block text-xs text-slate-400 mb-1">Logo Running Text (PNG/JPG)</label>
+                        <div className="flex items-center gap-3">
+                          {runningText.logoUrl && <img src={runningText.logoUrl} className="h-10 w-10 object-contain bg-black/40 rounded border border-slate-700" alt="Logo" />}
+                          <input type="file" accept="image/*" onChange={handleLogoUpload} className="w-full text-xs text-slate-400 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500 cursor-pointer bg-slate-900 border border-slate-700 rounded-lg" />
+                        </div>
+                        {runningText.logoUrl && <button onClick={() => setRunningText({...runningText, logoUrl: ''})} className="text-[10px] text-red-500 mt-1 hover:underline">Hapus Logo</button>}
                       </div>
+                    </div>
+
+                    <div className="pt-4 border-t border-slate-700/50">
+                      <h4 className="text-sm font-bold text-slate-300 mb-3">Tautan Media Sosial Footer</h4>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs text-slate-400 mb-1">Website URL</label>
+                          <input type="text" value={runningText.social?.website || ''} onChange={e => setRunningText({...runningText, social: {...runningText.social, website: e.target.value}})} className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm text-white outline-none focus:border-blue-500" placeholder="https://..." />
+                        </div>
+                        <div>
+                          <label className="block text-xs text-slate-400 mb-1">Nomor WhatsApp</label>
+                          <input type="text" value={runningText.social?.whatsapp || ''} onChange={e => setRunningText({...runningText, social: {...runningText.social, whatsapp: e.target.value}})} className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm text-white outline-none focus:border-blue-500" placeholder="628123..." />
+                        </div>
+                        <div>
+                          <label className="block text-xs text-slate-400 mb-1">Instagram URL</label>
+                          <input type="text" value={runningText.social?.instagram || ''} onChange={e => setRunningText({...runningText, social: {...runningText.social, instagram: e.target.value}})} className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm text-white outline-none focus:border-blue-500" placeholder="https://instagram.com/..." />
+                        </div>
+                        <div>
+                          <label className="block text-xs text-slate-400 mb-1">YouTube URL</label>
+                          <input type="text" value={runningText.social?.youtube || ''} onChange={e => setRunningText({...runningText, social: {...runningText.social, youtube: e.target.value}})} className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm text-white outline-none focus:border-blue-500" placeholder="https://youtube.com/..." />
+                        </div>
+                      </div>
+                      <p className="text-[10px] text-slate-500 mt-2">Kosongkan kolom jika tidak ingin menampilkan ikon tersebut di halaman login.</p>
                     </div>
                     
                     <button onClick={() => saveConfig('running_text', runningText)} className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-medium transition flex justify-center items-center gap-2 shadow-lg shadow-blue-600/20">
