@@ -109,6 +109,16 @@ export default function SettingsModal({ onClose }) {
     setNewUser({ ...u, password: '', permissions: perms });
   };
 
+  const handleLogoUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setRunningText({ ...runningText, logoUrl: reader.result });
+    };
+    reader.readAsDataURL(file);
+  };
+  
   const saveConfig = async (key, val) => {
     await axios.post('/api/settings', { key, value: val });
     alert(key === 'nvr_config' ? 'Koneksi NVR Disimpan!' : 'Pengaturan Peta Disimpan!');
